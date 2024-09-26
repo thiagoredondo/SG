@@ -1,0 +1,30 @@
+.hero-section-us {
+    height: 100vh;
+    background: url(/Imagenes/IMG-20220824-WA0016.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: rgba(106,141,163,0.7);
+    background-blend-mode: multiply;
+    display: flex;
+    align-items: center;
+    padding-left: 5%;
+}
+
+.wrap-hero-section-us {
+    min-width: 60%;
+    color: #fff;
+    padding: 5%;
+    font-weight: bold;
+    background-color: hsl(197, 7%, 21%, 0.5);
+    border-radius: 40px;
+    backdrop-filter: blur(4px);
+    border: 5px solid hsl(197, 7%, 21%, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    width: 50%;
+    height: auto;
+    box-sizing: border-box;
+}

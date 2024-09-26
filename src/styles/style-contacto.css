@@ -1,0 +1,143 @@
+.main {
+    flex: 1; 
+    background: url(/Imagenes/IMG-20220824-WA0016.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: rgba(106,141,163,0.7);
+    background-blend-mode: multiply;
+    display: flex;
+    align-items: center;
+}
+
+.container {
+    display: flex;
+    padding: 5%;
+    width: 100%;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: center;
+}
+
+.left {
+    background-color: hsl(197, 7%, 21%, 0.5);
+    padding: 5%;
+    border-radius: 40px;
+    backdrop-filter: blur(4px);
+    border: 5px solid hsl(197, 7%, 21%, 0.5);
+    display: flex;
+    width: 100%;
+    height: auto;
+    max-width: 400px;
+    max-height: 600px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    width: 50%;
+}
+
+.contact-left-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.left, .right {
+    flex: 1;
+}
+
+.right {
+    width: 50%;
+    min-width: 400px;
+    height: auto;
+    border: none;
+    display: flex;
+}
+
+.serigrafia-map {
+    width: 100%;
+    height: auto;
+    border: none;
+    border-radius: 40px;
+    min-height: 600px;
+    height: 100%;
+}
+
+.left-title h2 {
+    font-weight: bolder;
+    color: #fff;
+    font-size: 40px;
+    margin: 0;
+}
+
+.left-title hr {
+    border: none;
+    width: 100%;
+    height: 5px;
+    background-color: #76c5f0;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+
+.inputs {
+    width: 95%;
+    height: 50px;
+    border: none;
+    outline: none;
+    padding-left: 5%;
+    font-weight: 500;
+    color: #000000;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.textarea {
+    width: 90%;
+    height: 50px;
+    border: none;
+    outline: none;
+    padding: 5%;
+    font-weight: 500;
+    color: #000000;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 140px;
+}
+
+.inputs:focus {
+    box-shadow: inset 0 0 0 5px #76c5f0;
+}
+
+.textarea:focus {
+    box-shadow: inset 0 0 0 5px #76c5f0;
+}
+
+.inputs::placeholder {
+    color: #313638;
+}
+
+.textarea::placeholder {
+    color: #313638;
+}
+
+.left button {
+    display: flex;
+    align-items: center;
+    padding: 15px 30px;
+    font-size: 16px;
+    color: #fff;
+    gap: 10px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(270deg, #76c5f0, #adadad);
+    cursor: pointer;
+    font-weight: bolder;
+}
+
+.left button img {
+    height: 20px;
+}
