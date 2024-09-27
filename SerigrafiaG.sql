@@ -3,14 +3,14 @@ CREATE TABLE CLIENTE (
     ID_CLIENTE INT AUTO_INCREMENT PRIMARY KEY,
     NOMBRE VARCHAR(255) NOT NULL,
     TELEFONO VARCHAR(20),
-    EMAIL VARCHAR(255) -- Campo agregado
+    EMAIL VARCHAR(255)
 );
 
 -- Tabla USUARIO
 CREATE TABLE USUARIO (
     ID_USUARIO INT AUTO_INCREMENT PRIMARY KEY,
     NOMBRE VARCHAR(255) NOT NULL,
-    EMAIL VARCHAR(255) -- Campo agregado
+    EMAIL VARCHAR(255)
 );
 
 -- Tabla PEDIDO
@@ -20,14 +20,14 @@ CREATE TABLE PEDIDO (
     SEÑA DECIMAL(10, 2),
     FECHA_FIN DATE,
     IMPORTE_TOTAL DECIMAL(10, 2),
-    FACTURADO BOOLEAN, -- En MySQL, BOOLEAN es un alias de TINYINT(1)
+    FACTURADO BOOLEAN,
     TIEMPO_REALIZACION TIME,
-    TOMADO_POR INT, -- Usuario que toma el pedido
-    A_REALIZAR_POR INT, -- Usuario que realiza el pedido o "TERCERIZADO"
-    INGRESO_POR ENUM('whatsapp', 'telefono', 'email', 'mostrador'), -- Nuevo campo agregado
-    METODO_PAGO ENUM('efectivo', 'tarjeta', 'transferencia'), -- Campo agregado para método de pago
+    TOMADO_POR INT,
+    A_REALIZAR_POR INT,
+    INGRESO_POR ENUM('whatsapp', 'telefono', 'email', 'mostrador'),
+    METODO_PAGO ENUM('efectivo', 'tarjeta', 'transferencia'),
     ID_CLIENTE INT,
-    ESTADO ENUM('no comenzado', 'en proceso', 'realizado', 'entregado'), -- Estado del pedido
+    ESTADO ENUM('no comenzado', 'en proceso', 'realizado', 'entregado'),
     FOREIGN KEY (TOMADO_POR) REFERENCES USUARIO(ID_USUARIO),
     FOREIGN KEY (A_REALIZAR_POR) REFERENCES USUARIO(ID_USUARIO),
     FOREIGN KEY (ID_CLIENTE) REFERENCES CLIENTE(ID_CLIENTE)
