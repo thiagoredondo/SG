@@ -16,7 +16,7 @@ const db = mysql.createConnection({   //Conexion a mi base de datos.(parametros)
     password: '',
     database: ''
 });
-// quien me mando a estudiar backend?
+
 db.connect(err => {// Conexion a mi base de datos.
     if (err){
         console.error('Error de conexion a MySQL: ',err);
@@ -25,7 +25,7 @@ db.connect(err => {// Conexion a mi base de datos.
     console.log('Conectando a MySQL...');
 });
 
-app.get('/',(req, res)=>{  //Defino la ruta de la API chota esta lpm.
+app.get('/',(req, res)=>{  //Defino la ruta de la API
     res.send('API Funcionando con normalidad!');
 });
 

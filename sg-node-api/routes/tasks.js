@@ -1,7 +1,7 @@
 const express = require('express');
 const router= express.Router();
 
-router.get('/', (req, res)=>{   //obtiene todas las tareas disponibles ( tasksss)= tareasss
+router.get('/', (req, res)=>{   //obtiene todas las tareas disponibles (tasksss) = tareasss
     db.query('SELECT * FROM tasks', (err, results)=>{
         if (err){
             return res.status(500).json({message: err.message});
