@@ -11,10 +11,10 @@ app.use(express.json());  // Para recibir y enviar datos en formato JSON
 app.use('/tasks', tasksRoutes); // importo las rutas de tasks
 
 const db = mysql.createConnection({   //Conexion a mi base de datos.(parametros)
-    host: '',
-    user: '',
-    password: '',
-    database: ''
+    host: 'localhost',
+    user: 'admin',
+    password: 'Tuberculo9*',
+    database: 'SerigrafiaG'
 });
 
 db.connect(err => {// Conexion a mi base de datos.
@@ -25,7 +25,7 @@ db.connect(err => {// Conexion a mi base de datos.
     console.log('Conectando a MySQL...');
 });
 
-app.get('/',(req, res)=>{  //Defino la ruta de la API
+app.get('/',(_req, res)=>{  //Defino la ruta de la API
     res.send('API Funcionando con normalidad!');
 });
 

@@ -21,4 +21,5 @@ router.post('/', (req, res) => {  // creo una nueva tarea/ se puede hacer mas fa
     });
 });
 
+module.exports = router;
 
