@@ -6,6 +6,7 @@ const tasksRoutes = require('./routes/tasks'); // importo las rutas de tasks
 const app = express();
 const port = 5000; 
 
+//Middleware
 app.use(cors());
 app.use(express.json());  // Para recibir y enviar datos en formato JSON
 app.use('/tasks', tasksRoutes); // importo las rutas de tasks
