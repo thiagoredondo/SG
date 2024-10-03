@@ -12,7 +12,7 @@ app.use(express.json());  // Para recibir y enviar datos en formato JSON
 app.use('/tasks', tasksRoutes); // importo las rutas de tasks
 
 const db = mysql.createConnection({   //Conexion a mi base de datos.(parametros)
-    host: 'localhost',
+    host: '127.0.0.1',
     user: 'admin',
     password: 'Tuberculo9*',
     database: 'SerigrafiaG'
@@ -20,10 +20,10 @@ const db = mysql.createConnection({   //Conexion a mi base de datos.(parametros)
 
 db.connect(err => {// Conexion a mi base de datos.
     if (err){
-        console.error('Error de conexion a MySQL: ',err);
+        console.error('Error de conexion a MySQL in Azure: ',err);
         return;
     }
-    console.log('Conectando a MySQL...');
+    console.log('Conectando a MySQL en Azure...');
 });
 
 app.get('/',(_req, res)=>{  //Defino la ruta de la API
