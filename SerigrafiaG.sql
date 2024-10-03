@@ -52,7 +52,7 @@ CREATE TABLE REALIZA (
     FOREIGN KEY (ID_CLIENTE) REFERENCES CLIENTE(ID_CLIENTE)
 );
 
-
-ALTER TABLE USUARIO --Se agrega la columba ROL para establacer Administradores y comunes.
+--Se agrega la columba ROL y PASSWORD para establecer Administradores y comunes.
+ALTER TABLE USUARIO
 ADD COLUMN PASSWORD VARCHAR(255) NOT NULL,
 ADD COLUMN ROL ENUM('usuario', 'administrador') DEFAULT 'usuario';
