@@ -16,7 +16,16 @@ app.use(express.json());// Para recibir y enviar datos en formato JSON
 app.use('/tasks', tasksRoutes);
 app.use('/auth', authRoutes);
 app.use('/login', loginRoutes);
-app.use('/db', db);
+
+
+db.connect(err => {
+    if (err) {
+        console.error('Error al conectar a la base de datos:', err);
+    } else {
+        console.log('Conectado a la base de datos MySQL en Azure.');
+    }
+});
+
 
 app.get('/', (_req, res) => {  // estado de funcionamiento
     res.send('API Funcionando con normalidad!');

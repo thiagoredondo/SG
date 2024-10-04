@@ -1,6 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');  // Para comparar contraseñas
-const db = require('../db');      // Conexión a la base de datos
+const db = require('./db');      // Conexión a la base de datos
 const bcryptjs = require('bcryptjs');
 const router = express.Router();
 
