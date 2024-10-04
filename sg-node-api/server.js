@@ -1,9 +1,9 @@
 const express = require('express');
 const cors = require('cors');
-const tasksRoutes = require('./routes/tasks'); // importo las rutas de tasks
-const authRoutes = require('./routes/auth');  //  importo la ruta auth
-const loginRoutes = require('./routes/login');//  importo la ruta login
-const db = require('./routes/db');            //importo la ruta db
+const tasksRoutes = require('./routes/tasks');    // importo las rutas de tasks
+const authRoutes = require('./routes/auth');     //  importo la ruta auth
+const loginRoutes = require('./routes/login');  //  importo la ruta login
+const db = require('./routes/db');             //importo la ruta db
 
 const app = express();
 const port = 5000; 
@@ -16,6 +16,7 @@ app.use(express.json());// Para recibir y enviar datos en formato JSON
 app.use('/tasks', tasksRoutes);
 app.use('/auth', authRoutes);
 app.use('/login', loginRoutes);
+app.use('/db', db);
 
 app.get('/', (_req, res) => {  // estado de funcionamiento
     res.send('API Funcionando con normalidad!');
