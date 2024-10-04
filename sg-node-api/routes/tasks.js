@@ -11,7 +11,6 @@ router.get('/', (req, res)=>{   //obtiene todas las tareas disponibles (tasksss)
     });
 });
 
-
 router.post('/', (req, res) => {  // creo una nueva tarea/ se puede hacer mas facil y mas simpre./ INVESTIGAR
     const { title, description } = req.body;
     db.query('INSERT INTO tasks (title, description) VALUES (?, ?)', [title, description], (err, results) => {

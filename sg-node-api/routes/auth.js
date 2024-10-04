@@ -1,7 +1,8 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const router = express.Router();
 const db = require('../routes/db');      //IMporto la conexion a la base de db.js.
+const bcryptjs = require('bcryptjs');
 
 
 
@@ -9,7 +10,7 @@ router.post('/register', async (req, res) => {    //endpoint para registrar nuev
     const { nombre, email, password, rol } = req.body;
     
     try {
-        const hashedPassword = await bcrypt.hash(password, 10);//hasheo la contraseña (se cifra)
+        const hashedPassword = await bcryptjs.hash(password, 10);//hasheo la contraseña (se cifra)
 
         const query = 'INSERT INTO USUARIO (NOMBRE, EMAIL, PASSWORD, ROL) VALUES (?, ?, ?, ?)';//inserta al usuario en la db
 

@@ -1,6 +1,7 @@
 const express = require('express');
-const bcrypt = require('bcrypt');  // Para comparar contraseñas
+const bcrypt = require('bcryptjs');  // Para comparar contraseñas
 const db = require('../db');      // Conexión a la base de datos
+const bcryptjs = require('bcryptjs');
 const router = express.Router();
 
 router.post('/login', (req, res) => {   // defino endpoint a la propiedad router.post(/ lo que deba hacer)
@@ -17,7 +18,7 @@ router.post('/login', (req, res) => {   // defino endpoint a la propiedad router
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
         const user = results[0];// El usuario encontrado
-        const isMatch = await bcrypt.compare(password, user.PASSWORD);//Comparo la contraseña ingresada con la contraseña cifrada en bd
+        const isMatch = await bcryptjs.compare(password, user.PASSWORD);//Comparo la contraseña ingresada con la contraseña cifrada en bd
         if (!isMatch) {
             return res.status(401).json({ message: 'Contraseña incorrecta' });
         }
