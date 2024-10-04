@@ -1,5 +1,6 @@
 const express = require('express');
-const router= express.Router();
+const router= express.Router();         //tasks maneja el flujo de los enpoints( mas a delante)
+const db = require('../routes/db');     //importo la bd
 
 router.get('/', (req, res)=>{   //obtiene todas las tareas disponibles (tasksss) = tareasss
     db.query('SELECT * FROM tasks', (err, results)=>{

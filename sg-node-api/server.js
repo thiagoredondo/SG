@@ -1,36 +1,26 @@
 const express = require('express');
 const cors = require('cors');
-const mysql = require('mysql2');
 const tasksRoutes = require('./routes/tasks'); // importo las rutas de tasks
+const authRoutes = require('./routes/auth');  //  importo la ruta auth
+const loginRoutes = require('./routes/login');//  importo la ruta login
+const db = require('./routes/db');            //importo la ruta db
 
 const app = express();
 const port = 5000; 
 
 //Middleware
 app.use(cors());
-app.use(express.json());  // Para recibir y enviar datos en formato JSON
-app.use('/tasks', tasksRoutes); // importo las rutas de tasks
+app.use(express.json());// Para recibir y enviar datos en formato JSON
 
-const db = mysql.createConnection({   //Conexion a mi base de datos.(parametros)
-    host: '127.0.0.1',
-    user: 'admin',
-    password: 'Tuberculo9*',
-    database: 'SerigrafiaG'
-});
+// declaracion de rutas...
+app.use('/tasks', tasksRoutes);
+app.use('/auth', authRoutes);
+app.use('/login', loginRoutes);
 
-db.connect(err => {// Conexion a mi base de datos.
-    if (err){
-        console.error('Error de conexion a MySQL in Azure: ',err);
-        return;
-    }
-    console.log('Conectando a MySQL en Azure...');
-});
-
-app.get('/',(_req, res)=>{  //Defino la ruta de la API
+app.get('/', (_req, res) => {  // estado de funcionamiento
     res.send('API Funcionando con normalidad!');
 });
 
-app.listen(port,() =>{   // el servidor escucha = esta conectado en..
-    console.log('Servidor escuchando en http://localhost:${port}')
+app.listen(port, () => {  //confirmacion de conexion= escuchar...
+    console.log(`Servidor escuchando en http://localhost:${port}`);
 });
-
