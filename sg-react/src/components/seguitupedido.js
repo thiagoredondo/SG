@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import '../styles/style-seguitupedido.css';
 
 const SeguiTuPedido = () => {
+    //backend 
     const[email, setEmail]=useState(''); //seteo el estado de email.
     const[password, setPassword]=useState(''); //seteo la contraseña
     const handleSubmit=async(e)=>{
