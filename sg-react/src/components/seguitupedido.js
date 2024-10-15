@@ -1,71 +1,71 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import '../styles/style-seguitupedido.css';
 
 const SeguiTuPedido = () => {
-    //backend 
-    const[email, setEmail]=useState(''); //seteo el estado de email.
-    const[password, setPassword]=useState(''); //seteo la contraseña
-    const handleSubmit=async(e)=>{
+    const [email, setEmail] = useState(''); // seteo el estado de email.
+    const [password, setPassword] = useState(''); // seteo la contraseña
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const response=await fetch('http://localhost:5000/login',{ //hago la solicitud al server
-            method:'POST',
-            headers:{
-                'Content-Type':'application/json',
+        // Lógica para enviar al backend
+        const response = await fetch('http://localhost:5000/login', { // hago la solicitud al server
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify({email, password}),//envio el email y la contraseña a la bd
+            body: JSON.stringify({ email, password }), // envio el email y la contraseña a la bd
         });
-        const data=await response.json();//espero al server
-        
-        if(response.ok){ //redirijo segun rol
-            if(data.role==='admin'){
-                window.location.href=data.redirectUrl;//users
-            }else{
-                window.location.href=data.redirectUrl;//publico
+
+        const data = await response.json(); // espero al server
+
+        if (response.ok) { // redirijo según el rol
+            if (data.role === 'admin') {
+                window.location.href = '/userpanel'; // Redirige a UserPanel si es admin
+            } else {
+                window.location.href = '/clientpanel'; // Redirige a ClientPanel si es público
             }
-        }else{
-            alert(data.message);//mostrar mensaje de err
+        } else {
+            alert(data.message); // mostrar mensaje de error
         }
-    }
-return (
-    <section className="hero-section-stp">
-    <div className="contact-container-stp">
-        <form
-        action="https://api.web3forms.com/submit"
-        method="POST"
-        className="contact-left-stp"
-        >
-        <div className="contact-left-title-stp">
-            <h2>Ingresa</h2>
-            <hr />
-        </div>
-        <input
-            type="hidden"
-            name="access_key"
-            value="b7728d75-305e-4796-ba4d-17ee9ff23e4b"
-        />
-        <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            className="contact-inputs-stp"
-            required
-        />
-        <input
-            type="password"
-            name="password"
-            placeholder="Contraseña"
-            className="contact-inputs-stp"
-            required
-        />
-        <button type="submit" className="link-button-stp">
-            Ingresar <img src="/Imagenes/arrow_icon.png" alt="" />
-        </button>
-        <button type="button" className="link-button-forgot-stp">¿Olvidaste tu contraseña?</button>
-        </form>
-    </div>
-    </section>
-);
+    };
+
+    return (
+        <section className="hero-section-stp">
+            <div className="contact-container-stp">
+                <form onSubmit={handleSubmit} className="contact-left-stp">
+                    <div className="contact-left-title-stp">
+                        <h2>Ingresa</h2>
+                        <hr />
+                    </div>
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        className="contact-inputs-stp"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Contraseña"
+                        className="contact-inputs-stp"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                    <button type="submit" className="link-button-stp">
+                        Ingresar <img src="/Imagenes/arrow_icon.png" alt="" />
+                    </button>
+                    <button type="button" className="link-button-forgot-stp">
+                        ¿Olvidaste tu contraseña?
+                    </button>
+                </form>
+            </div>
+        </section>
+    );
 };
 
 export default SeguiTuPedido;
