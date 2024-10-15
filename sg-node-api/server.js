@@ -17,8 +17,7 @@ app.use('/tasks', tasksRoutes);
 app.use('/auth', authRoutes);
 app.use('/login', loginRoutes);
 
-
-db.connect(err => {
+db.connect(err => {    //me conecto a la bd
     if (err) {
         console.error('Error al conectar a la base de datos:', err);
     } else {

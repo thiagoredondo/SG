@@ -6,7 +6,7 @@ const bcryptjs = require('bcryptjs');
 
 
 
-router.post('/register', async (req, res) => {    //endpoint para registrar nuevos usuarios.
+router.post('/register', async (req, res) => {  //endpoint para registrar nuevos usuarios.
     const { nombre, email, password, rol } = req.body;
     
     try {
@@ -24,5 +24,26 @@ router.post('/register', async (req, res) => {    //endpoint para registrar nuev
     res.status(500).json({ message: 'Error al cifrar la contraseña', error: err });
     }
 });
+
+router.delete('/delete/:id',(req, res)=>{  //endpoint para eliminar usuarios
+    const {id}= req.params;
+
+    if (!id){
+        return res.status(400).json({message: 'El ID del user es necesario'});
+    }
+    const query = 'DELETE FROM USUARIO WHERE ID = ?';  //consulta de la bd
+    db.query(query, [id], (err, result) => {
+        if (err) {
+            return res.status(500).json({ message: 'Err al borrar user', error: err });
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json({ message: 'User eliminado satisfactoriamente' });
+    });
+});
+
+
+
 
 module.exports = router;

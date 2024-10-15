@@ -2,6 +2,31 @@ import React, {useState} from 'react';
 import '../styles/style-seguitupedido.css';
 
 const SeguiTuPedido = () => {
+    //backend 
+    const[email, setEmail]=useState(''); //seteo el estado de email.
+    const[password, setPassword]=useState(''); //seteo la contraseña
+    const handleSubmit=async(e)=>{
+        e.preventDefault();
+
+        const response=await fetch('http://localhost:5000/login',{ //hago la solicitud al server
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json',
+            },
+            body: JSON.stringify({email, password}),//envio el email y la contraseña a la bd
+        });
+        const data=await response.json();//espero al server
+        
+        if(response.ok){ //redirijo segun rol
+            if(data.role==='admin'){
+                window.location.href=data.redirectUrl;//users
+            }else{
+                window.location.href=data.redirectUrl;//publico
+            }
+        }else{
+            alert(data.message);//mostrar mensaje de err
+        }
+    }
 return (
     <section className="hero-section-stp">
     <div className="contact-container-stp">
