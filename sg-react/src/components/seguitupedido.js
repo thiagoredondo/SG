@@ -8,25 +8,35 @@ const SeguiTuPedido = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Lógica para enviar al backend
-        const response = await fetch('http://localhost:5000/login', { // hago la solicitud al server
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }), // envio el email y la contraseña a la bd
-        });
+        try {
+            // Lógica para enviar al backend
+            const response = await fetch('http://localhost:5000/login', { // hago la solicitud al server
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }), // envio el email y la contraseña al server
+            });
 
-        const data = await response.json(); // espero al server
+            if (!response.ok) {
+                // Si el servidor responde con un error, lanzar el error
+                throw new Error('Error en el servidor. Verifique sus datos.');
+            }
 
-        if (response.ok) { // redirijo según el rol
+            const data = await response.json(); // Espero la respuesta en formato JSON
+
+            // Almacenar el token en localStorage
+            localStorage.setItem('token', data.token);
+
+            // Redirijo según el rol del usuario
             if (data.role === 'admin') {
                 window.location.href = '/userpanel'; // Redirige a UserPanel si es admin
             } else {
                 window.location.href = '/clientpanel'; // Redirige a ClientPanel si es público
             }
-        } else {
-            alert(data.message); // mostrar mensaje de error
+        } catch (error) {
+            // Si hay un error en la solicitud, mostrar el mensaje de error
+            alert(error.message || 'Ocurrió un error, intente nuevamente.');
         }
     };
 
@@ -58,9 +68,6 @@ const SeguiTuPedido = () => {
                     />
                     <button type="submit" className="link-button-stp">
                         Ingresar <img src="/Imagenes/arrow_icon.png" alt="" />
-                    </button>
-                    <button type="button" className="link-button-forgot-stp">
-                        ¿Olvidaste tu contraseña?
                     </button>
                 </form>
             </div>
