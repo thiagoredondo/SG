@@ -17,6 +17,9 @@ const UserPanel = () => {
         metodoPago: 'efectivo',
         idCliente: 1, // ID del cliente (puedes cambiar según sea necesario)
         estado: 'no comenzado',
+        descripcion: '', // Nuevo campo
+        cantidad: '', // Nuevo campo
+        categoria: 'Grabados laser', // Nuevo campo
     });
 
     // Función para obtener pedidos de la API
@@ -29,9 +32,9 @@ const UserPanel = () => {
             }
             const data = await response.json();
             setOrders(data); // Actualizar el estado con los pedidos obtenidos
-            setLoading(false); // Finalizar carga
         } catch (err) {
             setError(err.message); // Manejar error
+        } finally {
             setLoading(false); // Finalizar carga
         }
     };
@@ -43,10 +46,10 @@ const UserPanel = () => {
 
     const handleNewOrderChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setNewOrder({
-            ...newOrder,
+        setNewOrder(prevState => ({
+            ...prevState,
             [name]: type === 'checkbox' ? checked : value,
-        });
+        }));
     };
 
     const handleNewOrderSubmit = async (e) => {
@@ -57,10 +60,7 @@ const UserPanel = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    ...newOrder,
-                    tiempoRealizacion: calculateDuration(newOrder.fechaIngreso, newOrder.fechaFin) // Calcular tiempo de realización
-                }),
+                body: JSON.stringify(newOrder),
             });
 
             if (!response.ok) {
@@ -79,6 +79,9 @@ const UserPanel = () => {
                 metodoPago: 'efectivo',
                 idCliente: 1,
                 estado: 'no comenzado',
+                descripcion: '', // Limpiar el nuevo campo
+                cantidad: '', // Limpiar el nuevo campo
+                categoria: 'Grabados laser', // Limpiar el nuevo campo
             });
             // Refrescar la lista de pedidos
             fetchOrders();
@@ -86,14 +89,6 @@ const UserPanel = () => {
         } catch (error) {
             alert(error.message);
         }
-    };
-
-    // Función para calcular la duración entre fechas
-    const calculateDuration = (fechaIngreso, fechaFin) => {
-        const start = new Date(fechaIngreso);
-        const end = new Date(fechaFin);
-        const duration = new Date(end - start);
-        return `${duration.getUTCHours()} horas y ${duration.getUTCMinutes()} minutos`; // Formato del tiempo de realización
     };
 
     return (
@@ -188,6 +183,36 @@ const UserPanel = () => {
                         <option value="realizado">Realizado</option>
                         <option value="entregado">Entregado</option>
                     </select>
+                    <label>Descripción</label>
+                    <textarea
+                        name="descripcion"
+                        value={newOrder.descripcion}
+                        onChange={handleNewOrderChange}
+                        required
+                    />
+                    <label>Cantidad</label>
+                    <input
+                        type="number"
+                        name="cantidad"
+                        value={newOrder.cantidad}
+                        onChange={handleNewOrderChange}
+                        required
+                    />
+                    <label>Categoría</label>
+                    <select
+                        name="categoria"
+                        value={newOrder.categoria}
+                        onChange={handleNewOrderChange}
+                    >
+                        <option value="Grabados laser">Grabados laser</option>
+                        <option value="Banderas">Banderas</option>
+                        <option value="Impresión en prendas">Impresión en prendas</option>
+                        <option value="Impresión en objetos">Impresión en objetos</option>
+                        <option value="Cartelería">Cartelería</option>
+                        <option value="Ploteos">Ploteos</option>
+                        <option value="Merchandising">Merchandising</option>
+                        <option value="Otros">Otros</option>
+                    </select>
                     <div>
                         <input
                             type="checkbox"
@@ -222,34 +247,40 @@ const UserPanel = () => {
                                 <th>Fecha Finalización</th>
                                 <th>Importe Total</th>
                                 <th>Facturado</th>
-                                <th>Tiempo Realización</th>
                                 <th>Tomado por</th>
                                 <th>A realizar por</th>
                                 <th>Ingreso por</th>
                                 <th>Método de Pago</th>
                                 <th>ID Cliente</th>
                                 <th>Estado</th>
+                                <th>Descripción</th>
+                                <th>Cantidad</th>
+                                <th>Categoría</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {orders.map(order => (
-                                <tr key={order.ID_PEDIDO}>
-                                    <td>{order.ID_PEDIDO}</td>
-                                    <td>{order.FECHA_INGRESO}</td>
-                                    <td>{order.SEÑA}</td>
-                                    <td>{order.FECHA_FIN}</td>
-                                    <td>{order.IMPORTE_TOTAL}</td>
-                                    <td>{order.FACTURADO ? 'Sí' : 'No'}</td>
-                                    <td>{calculateDuration(order.FECHA_INGRESO, order.FECHA_FIN)}</td> {/* Cálculo en la tabla */}
-                                    <td>{order.TOMADO_POR}</td>
-                                    <td>{order.A_REALIZAR_POR}</td>
-                                    <td>{order.INGRESO_POR}</td>
-                                    <td>{order.METODO_PAGO}</td>
-                                    <td>{order.ID_CLIENTE}</td>
-                                    <td>{order.ESTADO}</td>
+                            {orders.map((order) => (
+                                <tr key={order.idPedido}>
+                                    <td>{order.idPedido}</td>
+                                    <td>{new Date(order.fechaIngreso).toLocaleDateString()}</td>
+                                    <td>{order.senia}</td>
+                                    <td>{new Date(order.fechaFin).toLocaleDateString()}</td>
+                                    <td>{order.importeTotal}</td>
+                                    <td>{order.facturado ? 'Sí' : 'No'}</td>
+                                    <td>{order.tomadoPor}</td>
+                                    <td>{order.aRealizarPor}</td>
+                                    <td>{order.ingresoPor}</td>
+                                    <td>{order.metodoPago}</td>
+                                    <td>{order.idCliente}</td>
+                                    <td>{order.estado}</td>
+                                    <td>{order.descripcion}</td>
+                                    <td>{order.cantidad}</td>
+                                    <td>{order.categoria}</td>
                                     <td>
-                                        <button>Edit</button>
+                                        {/* Aquí puedes agregar acciones para editar o eliminar el pedido */}
+                                        <button>Editar</button>
+                                        <button>Eliminar</button>
                                     </td>
                                 </tr>
                             ))}

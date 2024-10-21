@@ -1,39 +1,52 @@
 const express = require('express');
+const cors = require('cors');
+const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const cors = require('cors'); // Para manejar solicitudes desde otro dominio (React)
-const db = require('./db'); // Importa la conexión de la base de datos
-const app = express();
+require('dotenv').config();
 
-// Middleware
+const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Conexión a la base de datos
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'thiago',
+    password: '123456',
+    database: 'SerigrafiaGomez'
+});
+
+connection.connect(err => {
+    if (err) {
+        console.error('Error al conectarse a la base de datos:', err);
+        return;
+    }
+    console.log('Conectado a la base de datos MySQL');
+});
+
+// Función de manejo de errores
+const handleError = (res, err, message) => {
+    console.error(err);
+    return res.status(500).json({ message });
+};
 
 // Ruta para login
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
-    // Buscar usuario en la base de datos
-    db.query('SELECT * FROM USUARIO WHERE EMAIL = ?', [email], async (err, results) => {
-        if (err) {
-            return res.status(500).json({ message: 'Error en el servidor' });
-        }
+    connection.query('SELECT * FROM USUARIO WHERE EMAIL = ?', [email], async (err, results) => {
+        if (err) return handleError(res, err, 'Error en el servidor');
 
         const user = results[0];
 
-        if (!user) {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
-        }
+        if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
 
-        // Verificar la contraseña
-        const isMatch = await bcrypt.compare(password, user.PASSWORD); // Asegúrate de que este campo es correcto
+        const isMatch = await bcrypt.compare(password, user.PASSWORD);
 
-        if (!isMatch) {
-            return res.status(400).json({ message: 'Contraseña incorrecta' });
-        }
+        if (!isMatch) return res.status(400).json({ message: 'Contraseña incorrecta' });
 
-        // Generar el token JWT
-        const token = jwt.sign({ id: user.ID_USUARIO, role: user.ROLE }, 'secreto', { expiresIn: '1h' });
+        const token = jwt.sign({ id: user.ID_USUARIO, role: user.ROLE }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         res.json({ token, role: user.ROLE });
     });
@@ -43,14 +56,14 @@ app.post('/login', async (req, res) => {
 app.post('/register', async (req, res) => {
     const { nombre, email, password, role } = req.body;
 
-    // Encriptar la contraseña antes de guardarla
+    if (!nombre || !email || !password || !role) {
+        return res.status(400).json({ message: 'Por favor, completa todos los campos.' });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Insertar el nuevo usuario en la base de datos
-    db.query('INSERT INTO USUARIO (NOMBRE, EMAIL, PASSWORD, ROLE) VALUES (?, ?, ?, ?)', [nombre, email, hashedPassword, role], (err) => {
-        if (err) {
-            return res.status(500).json({ message: 'Error al registrar el usuario' });
-        }
+    connection.query('INSERT INTO USUARIO (NOMBRE, EMAIL, PASSWORD, ROLE) VALUES (?, ?, ?, ?)', [nombre, email, hashedPassword, role], (err) => {
+        if (err) return handleError(res, err, 'Error al registrar el usuario');
 
         res.status(201).json({ message: 'Usuario registrado con éxito' });
     });
@@ -60,10 +73,12 @@ app.post('/register', async (req, res) => {
 app.post('/clientes', (req, res) => {
     const { nombre, telefono, email } = req.body;
 
-    db.query('INSERT INTO CLIENTE (NOMBRE, TELEFONO, EMAIL) VALUES (?, ?, ?)', [nombre, telefono, email], (err) => {
-        if (err) {
-            return res.status(500).json({ message: 'Error al crear el cliente' });
-        }
+    if (!nombre || !telefono || !email) {
+        return res.status(400).json({ message: 'Por favor, completa todos los campos del cliente.' });
+    }
+
+    connection.query('INSERT INTO CLIENTE (NOMBRE, TELEFONO, EMAIL) VALUES (?, ?, ?)', [nombre, telefono, email], (err) => {
+        if (err) return handleError(res, err, 'Error al crear el cliente');
 
         res.status(201).json({ message: 'Cliente creado con éxito' });
     });
@@ -71,43 +86,42 @@ app.post('/clientes', (req, res) => {
 
 // Ruta para obtener todos los clientes
 app.get('/clientes', (req, res) => {
-    db.query('SELECT * FROM CLIENTE', (err, results) => {
-        if (err) {
-            return res.status(500).json({ message: 'Error al obtener los clientes' });
-        }
+    connection.query('SELECT * FROM CLIENTE', (err, results) => {
+        if (err) return handleError(res, err, 'Error al obtener los clientes');
 
         res.json(results);
     });
 });
 
 // Ruta para crear un nuevo pedido
-app.post('/pedidos', (req, res) => {
-    const { fecha_ingreso, seña, fecha_fin, importe_total, facturado, tiempo_realizacion, tomado_por, a_realizar_por, ingreso_por, metodo_pago, id_cliente, estado } = req.body;
+app.post('/nuevo-pedido', (req, res) => {
+    const { fechaIngreso, senia, fechaFin, importeTotal, facturado, tomadoPor, aRealizarPor, ingresoPor, metodoPago, idCliente, estado, descripcion, cantidad, categoria } = req.body;
 
-    db.query('INSERT INTO PEDIDO (FECHA_INGRESO, SEÑA, FECHA_FIN, IMPORTE_TOTAL, FACTURADO, TIEMPO_REALIZACION, TOMADO_POR, A_REALIZAR_POR, INGRESO_POR, METODO_PAGO, ID_CLIENTE, ESTADO) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
-        [fecha_ingreso, seña, fecha_fin, importe_total, facturado, tiempo_realizacion, tomado_por, a_realizar_por, ingreso_por, metodo_pago, id_cliente, estado], 
+    if (!fechaIngreso || !importeTotal || !idCliente || !descripcion || !cantidad || !categoria) {
+        return res.status(400).json({ message: 'Por favor, completa todos los campos del pedido.' });
+    }
+
+    connection.query('INSERT INTO PEDIDO (FECHA_INGRESO, SENIA, FECHA_FIN, IMPORTE_TOTAL, FACTURADO, TOMADO_POR, A_REALIZAR_POR, INGRESO_POR, METODO_PAGO, ID_CLIENTE, ESTADO, DESCRIPCION, CANTIDAD, CATEGORIA) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
+        [fechaIngreso, senia, fechaFin, importeTotal, facturado, tomadoPor, aRealizarPor, ingresoPor, metodoPago, idCliente, estado, descripcion, cantidad, categoria], 
         (err) => {
-            if (err) {
-                return res.status(500).json({ message: 'Error al crear el pedido' });
-            }
+            if (err) return handleError(res, err, 'Error al agregar el pedido');
 
-            res.status(201).json({ message: 'Pedido creado con éxito' });
+            res.status(201).json({ message: 'Pedido agregado con éxito' });
         }
     );
 });
 
-// NUEVA Ruta para obtener todos los pedidos
+// Ruta para obtener todos los pedidos
 app.get('/pedidos', (req, res) => {
-    db.query('SELECT * FROM PEDIDO', (err, results) => {
-        if (err) {
-            return res.status(500).json({ message: 'Error al obtener los pedidos' });
-        }
+    connection.query('SELECT * FROM PEDIDO', (err, results) => {
+        if (err) return handleError(res, err, 'Error al obtener los pedidos');
 
         res.json(results);
     });
 });
 
 // Iniciar el servidor
-app.listen(5000, () => {
-    console.log('Servidor corriendo en http://localhost:5000');
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log(`Servidor en ejecución en el puerto ${PORT}`);
 });

@@ -5,7 +5,7 @@ const connection = mysql.createConnection({
     host: 'localhost', // Cambia esto si tu base de datos está en otro lugar
     user: 'thiago', // Reemplaza con tu usuario de MySQL
     password: '123456', // Reemplaza con tu contraseña de MySQL
-    database: 'SistemaPedidos', // Nombre de tu base de datos
+    database: 'SerigrafiaGomez', // Nombre de tu base de datos
     port: 3306 // O el puerto que estés utilizando
 });
 
