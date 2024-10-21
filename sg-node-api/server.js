@@ -27,28 +27,47 @@ connection.connect(err => {
 
 // Función de manejo de errores
 const handleError = (res, err, message) => {
-    console.error(err);
-    return res.status(500).json({ message });
+    console.error(message, err);  // Agregado para ver el error completo
+    return res.status(500).json({ message: 'Error en el servidor. Verifique sus datos.' });
 };
 
 // Ruta para login
-app.post('/login', async (req, res) => {
+app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+        return res.status(400).json({ message: 'Por favor, completa todos los campos' });
+    }
+
+    // Consulta del usuario por email
     connection.query('SELECT * FROM USUARIO WHERE EMAIL = ?', [email], async (err, results) => {
-        if (err) return handleError(res, err, 'Error en el servidor');
+        if (err) return handleError(res, err, 'Error en la consulta de la base de datos');
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
 
         const user = results[0];
 
-        if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
+        try {
+            // Comparar la contraseña ingresada con la almacenada
+            const isMatch = await bcrypt.compare(password, user.PASSWORD);
+            console.log('Resultado de comparación de contraseñas:', isMatch);  // Depuración
 
-        const isMatch = await bcrypt.compare(password, user.PASSWORD);
+            if (!isMatch) {
+                return res.status(400).json({ message: 'Contraseña incorrecta' });
+            }
 
-        if (!isMatch) return res.status(400).json({ message: 'Contraseña incorrecta' });
+            // Generar el token JWT
+            const token = jwt.sign({ id: user.ID_USUARIO, role: user.ROLE }, process.env.JWT_SECRET, { expiresIn: '1h' });
+            console.log('Token generado:', token);  // Depuración
 
-        const token = jwt.sign({ id: user.ID_USUARIO, role: user.ROLE }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-        res.json({ token, role: user.ROLE });
+            // Responder con el token y el rol del usuario
+            res.json({ token, role: user.ROLE });
+        } catch (error) {
+            console.error('Error durante la comparación de la contraseña:', error);
+            return handleError(res, error, 'Error durante la comparación de la contraseña');
+        }
     });
 });
 
@@ -60,13 +79,20 @@ app.post('/register', async (req, res) => {
         return res.status(400).json({ message: 'Por favor, completa todos los campos.' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    try {
+        // Encripta la contraseña
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-    connection.query('INSERT INTO USUARIO (NOMBRE, EMAIL, PASSWORD, ROLE) VALUES (?, ?, ?, ?)', [nombre, email, hashedPassword, role], (err) => {
-        if (err) return handleError(res, err, 'Error al registrar el usuario');
+        // Inserta el nuevo usuario con la contraseña encriptada
+        connection.query('INSERT INTO USUARIO (NOMBRE, EMAIL, PASSWORD, ROLE) VALUES (?, ?, ?, ?)', 
+            [nombre, email, hashedPassword, role], (err) => {
+            if (err) return res.status(500).json({ message: 'Error al registrar el usuario' });
 
-        res.status(201).json({ message: 'Usuario registrado con éxito' });
-    });
+            res.status(201).json({ message: 'Usuario registrado con éxito' });
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Error en el servidor al encriptar la contraseña' });
+    }
 });
 
 // Ruta para crear un nuevo cliente
