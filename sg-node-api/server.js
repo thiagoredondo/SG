@@ -32,43 +32,45 @@ const handleError = (res, err, message) => {
 };
 
 // Ruta para login
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
         return res.status(400).json({ message: 'Por favor, completa todos los campos' });
     }
 
-    // Consulta del usuario por email
-    connection.query('SELECT * FROM USUARIO WHERE EMAIL = ?', [email], async (err, results) => {
-        if (err) return handleError(res, err, 'Error en la consulta de la base de datos');
+    try {
+        connection.query('SELECT * FROM usuario WHERE email = ?', [email], async (err, results) => {
+            if (err) {
+                return handleError(res, err, 'Error durante la consulta de login');
+            }
 
-        if (results.length === 0) {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
-        }
+            console.log(results); // Agrega esto para depurar
 
-        const user = results[0];
+            if (results.length === 0) {
+                return res.status(404).json({ message: 'Usuario no encontrado' });
+            }
 
-        try {
-            // Comparar la contraseña ingresada con la almacenada
-            const isMatch = await bcrypt.compare(password, user.PASSWORD);
-            console.log('Resultado de comparación de contraseñas:', isMatch);  // Depuración
+            const user = results[0];
+
+            // Asegurarse de que la contraseña sea undefined
+            if (typeof user.password === 'undefined') {
+                return res.status(400).json({ message: 'Contraseña no encontrada' });
+            }
+
+            // Comparar la contraseña
+            const isMatch = await bcrypt.compare(password, user.password);
 
             if (!isMatch) {
                 return res.status(400).json({ message: 'Contraseña incorrecta' });
             }
 
-            // Generar el token JWT
-            const token = jwt.sign({ id: user.ID_USUARIO, role: user.ROLE }, process.env.JWT_SECRET, { expiresIn: '1h' });
-            console.log('Token generado:', token);  // Depuración
-
-            // Responder con el token y el rol del usuario
-            res.json({ token, role: user.ROLE });
-        } catch (error) {
-            console.error('Error durante la comparación de la contraseña:', error);
-            return handleError(res, error, 'Error durante la comparación de la contraseña');
-        }
-    });
+            const token = jwt.sign({ id: user.idUsuario, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+            res.json({ token, role: user.role }); // Cambiado de ROLE a role
+        });
+    } catch (error) {
+        return handleError(res, error, 'Error en el servidor durante el login');
+    }
 });
 
 // Ruta para registrar un nuevo usuario
@@ -84,7 +86,7 @@ app.post('/register', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Inserta el nuevo usuario con la contraseña encriptada
-        connection.query('INSERT INTO USUARIO (NOMBRE, EMAIL, PASSWORD, ROLE) VALUES (?, ?, ?, ?)', 
+        connection.query('INSERT INTO USUARIO (nombre, email, password, role) VALUES (?, ?, ?, ?)', 
             [nombre, email, hashedPassword, role], (err) => {
             if (err) return res.status(500).json({ message: 'Error al registrar el usuario' });
 
@@ -127,7 +129,7 @@ app.post('/nuevo-pedido', (req, res) => {
         return res.status(400).json({ message: 'Por favor, completa todos los campos del pedido.' });
     }
 
-    connection.query('INSERT INTO PEDIDO (FECHA_INGRESO, SENIA, FECHA_FIN, IMPORTE_TOTAL, FACTURADO, TOMADO_POR, A_REALIZAR_POR, INGRESO_POR, METODO_PAGO, ID_CLIENTE, ESTADO, DESCRIPCION, CANTIDAD, CATEGORIA) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
+    connection.query('INSERT INTO PEDIDO (fechaIngreso, senia, fechaFin, importeTotal, facturado, tomadoPor, aRealizarPor, ingresoPor, metodoPago, idCliente, estado, descripcion, cantidad, categoria) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
         [fechaIngreso, senia, fechaFin, importeTotal, facturado, tomadoPor, aRealizarPor, ingresoPor, metodoPago, idCliente, estado, descripcion, cantidad, categoria], 
         (err) => {
             if (err) return handleError(res, err, 'Error al agregar el pedido');
@@ -143,6 +145,21 @@ app.get('/pedidos', (req, res) => {
         if (err) return handleError(res, err, 'Error al obtener los pedidos');
 
         res.json(results);
+    });
+});
+
+// Ruta para eliminar un pedido
+app.delete('/eliminar-pedido/:id', (req, res) => {
+    const { id } = req.params;
+
+    connection.query('DELETE FROM PEDIDO WHERE idPedido = ?', [id], (err, results) => {
+        if (err) return handleError(res, err, 'Error al eliminar el pedido');
+
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ message: 'Pedido no encontrado' });
+        }
+
+        res.json({ message: 'Pedido eliminado con éxito' });
     });
 });
 

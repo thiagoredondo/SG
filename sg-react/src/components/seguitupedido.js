@@ -2,40 +2,40 @@ import React, { useState } from 'react';
 import '../styles/style-seguitupedido.css';
 
 const SeguiTuPedido = () => {
-    const [email, setEmail] = useState(''); // seteo el estado de email.
-    const [password, setPassword] = useState(''); // seteo la contraseña
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            // Lógica para enviar al backend
-            const response = await fetch('http://localhost:5000/login', { // hago la solicitud al server
+            const response = await fetch('http://localhost:5000/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, password }), // envio el email y la contraseña al server
+                body: JSON.stringify({ email, password }),
             });
 
             if (!response.ok) {
-                // Si el servidor responde con un error, lanzar el error
-                throw new Error('Error en el servidor. Verifique sus datos.');
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Error en el servidor. Verifique sus datos.');
             }
 
-            const data = await response.json(); // Espero la respuesta en formato JSON
-
-            // Almacenar el token en localStorage
-            localStorage.setItem('token', data.token);
-
-            // Redirijo según el rol del usuario
-            if (data.role === 'admin') {
-                window.location.href = '/userpanel'; // Redirige a UserPanel si es admin
+            const data = await response.json();
+            
+            if (data.token) {
+                localStorage.setItem('token', data.token);
             } else {
-                window.location.href = '/clientpanel'; // Redirige a ClientPanel si es público
+                throw new Error('No se recibió un token válido.');
+            }
+
+            if (data.role === 'admin') {
+                window.location.href = '/userpanel';
+            } else {
+                window.location.href = '/clientpanel';
             }
         } catch (error) {
-            // Si hay un error en la solicitud, mostrar el mensaje de error
             alert(error.message || 'Ocurrió un error, intente nuevamente.');
         }
     };
@@ -67,7 +67,7 @@ const SeguiTuPedido = () => {
                         required
                     />
                     <button type="submit" className="link-button-stp">
-                        Ingresar <img src="/Imagenes/arrow_icon.png" alt="" />
+                        Ingresar <img src="/Imagenes/arrow_icon.png" alt="Icono de flecha" />
                     </button>
                 </form>
             </div>

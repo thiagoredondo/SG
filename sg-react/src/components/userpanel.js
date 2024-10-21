@@ -31,9 +31,11 @@ const UserPanel = () => {
                 throw new Error('Error al obtener los pedidos');
             }
             const data = await response.json();
+            console.log(data); // Agrega esto para ver lo que estás recibiendo
             setOrders(data); // Actualizar el estado con los pedidos obtenidos
         } catch (err) {
-            setError(err.message); // Manejar error
+            console.error('Error al obtener los pedidos:', err);
+            setError(err.message);        
         } finally {
             setLoading(false); // Finalizar carga
         }
@@ -88,6 +90,26 @@ const UserPanel = () => {
             alert('Pedido agregado con éxito!');
         } catch (error) {
             alert(error.message);
+        }
+    };
+
+    // Función para eliminar un pedido
+    const handleDeleteOrder = async (orderId) => {
+        if (window.confirm("¿Estás seguro de que deseas eliminar este pedido?")) {
+            try {
+                const response = await fetch(`http://localhost:5000/eliminar-pedido/${orderId}`, {
+                    method: 'DELETE',
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error al eliminar el pedido');
+                }
+                // Refrescar la lista de pedidos
+                fetchOrders();
+                alert('Pedido eliminado con éxito!');
+            } catch (error) {
+                alert(error.message);
+            }
         }
     };
 
@@ -228,9 +250,6 @@ const UserPanel = () => {
 
             <div className="current-orders">
                 <h2>Pedidos Actuales</h2>
-                
-                {/* Botón para actualizar pedidos manualmente */}
-                <button onClick={fetchOrders}>Actualizar Pedidos</button>
 
                 {/* Mostrar mensaje de carga o error */}
                 {loading && <p>Cargando pedidos...</p>}
@@ -244,12 +263,12 @@ const UserPanel = () => {
                                 <th>ID Pedido</th>
                                 <th>Fecha Ingreso</th>
                                 <th>Seña</th>
-                                <th>Fecha Finalización</th>
+                                <th>Fecha Fin</th>
                                 <th>Importe Total</th>
                                 <th>Facturado</th>
-                                <th>Tomado por</th>
-                                <th>A realizar por</th>
-                                <th>Ingreso por</th>
+                                <th>Tomado Por</th>
+                                <th>A Realizar Por</th>
+                                <th>Ingreso Por</th>
                                 <th>Método de Pago</th>
                                 <th>ID Cliente</th>
                                 <th>Estado</th>
@@ -260,7 +279,7 @@ const UserPanel = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {orders.map((order) => (
+                            {orders.map(order => (
                                 <tr key={order.idPedido}>
                                     <td>{order.idPedido}</td>
                                     <td>{new Date(order.fechaIngreso).toLocaleDateString()}</td>
@@ -278,9 +297,7 @@ const UserPanel = () => {
                                     <td>{order.cantidad}</td>
                                     <td>{order.categoria}</td>
                                     <td>
-                                        {/* Aquí puedes agregar acciones para editar o eliminar el pedido */}
-                                        <button>Editar</button>
-                                        <button>Eliminar</button>
+                                        <button onClick={() => handleDeleteOrder(order.idPedido)}>Eliminar</button>
                                     </td>
                                 </tr>
                             ))}
