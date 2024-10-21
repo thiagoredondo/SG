@@ -2,49 +2,68 @@ import React, { useState, useEffect } from 'react';
 import '../styles/userpanel.css'; // Asegúrate de crear un archivo CSS para darle estilo
 
 const UserPanel = () => {
-    const [orders, setOrders] = useState([]); // Inicialmente vacío
-    const [loading, setLoading] = useState(true); // Estado para saber si está cargando
-    const [error, setError] = useState(null); // Estado para manejar errores
-    const [newOrder, setNewOrder] = useState({ // Estado para el nuevo pedido
+    const [orders, setOrders] = useState([]); // Pedidos
+    const [users, setUsers] = useState([]); // Usuarios para los desplegables
+    const [loading, setLoading] = useState(true); // Estado de carga
+    const [error, setError] = useState(null); // Estado de error
+    const [newOrder, setNewOrder] = useState({
         fechaIngreso: '',
         senia: '',
         fechaFin: '',
         importeTotal: '',
         facturado: false,
-        tomadoPor: 1, // ID del usuario
-        aRealizarPor: 1, // ID del usuario
+        tomadoPor: '', // ID del usuario
+        aRealizarPor: '', // ID del usuario
         ingresoPor: 'mostrador',
         metodoPago: 'efectivo',
-        idCliente: 1, // ID del cliente (puedes cambiar según sea necesario)
+        idCliente: 1, // ID del cliente
         estado: 'no comenzado',
-        descripcion: '', // Nuevo campo
-        cantidad: '', // Nuevo campo
-        categoria: 'Grabados laser', // Nuevo campo
+        descripcion: '',
+        cantidad: '',
+        categoria: 'Grabados laser', 
     });
 
-    // Función para obtener pedidos de la API
+    // Función para obtener los pedidos desde la API
     const fetchOrders = async () => {
         try {
-            setLoading(true); // Iniciar carga
+            setLoading(true); 
             const response = await fetch('http://localhost:5000/pedidos');
             if (!response.ok) {
                 throw new Error('Error al obtener los pedidos');
             }
             const data = await response.json();
-            console.log(data); // Agrega esto para ver lo que estás recibiendo
-            setOrders(data); // Actualizar el estado con los pedidos obtenidos
+            setOrders(data);
         } catch (err) {
-            console.error('Error al obtener los pedidos:', err);
-            setError(err.message);        
+            setError(err.message);
         } finally {
-            setLoading(false); // Finalizar carga
+            setLoading(false);
         }
     };
 
-    // useEffect para cargar los pedidos cuando el componente se monta
+    // Función para obtener los usuarios desde la API
+    const fetchUsers = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/usuarios');
+            if (!response.ok) {
+                throw new Error('Error al obtener los usuarios');
+            }
+            const data = await response.json();
+            setUsers(data); // Cargar usuarios en el estado
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
     useEffect(() => {
         fetchOrders();
-    }, []); // El segundo parámetro [] asegura que solo se ejecute una vez
+        fetchUsers(); // Cargar usuarios cuando el componente se monta
+    }, []); 
+
+        // Función para formatear las fechas a 'dd/mm/aaaa'
+        const formatDate = (dateString) => {
+            const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+            return new Date(dateString).toLocaleDateString('es-ES', options);
+        };
 
     const handleNewOrderChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -68,24 +87,23 @@ const UserPanel = () => {
             if (!response.ok) {
                 throw new Error('Error al agregar el pedido');
             }
-            // Limpiar el formulario
+
             setNewOrder({
                 fechaIngreso: '',
                 senia: '',
                 fechaFin: '',
                 importeTotal: '',
                 facturado: false,
-                tomadoPor: 1,
-                aRealizarPor: 1,
+                tomadoPor: '',
+                aRealizarPor: '',
                 ingresoPor: 'mostrador',
                 metodoPago: 'efectivo',
                 idCliente: 1,
                 estado: 'no comenzado',
-                descripcion: '', // Limpiar el nuevo campo
-                cantidad: '', // Limpiar el nuevo campo
-                categoria: 'Grabados laser', // Limpiar el nuevo campo
+                descripcion: '',
+                cantidad: '',
+                categoria: 'Grabados laser',
             });
-            // Refrescar la lista de pedidos
             fetchOrders();
             alert('Pedido agregado con éxito!');
         } catch (error) {
@@ -93,7 +111,6 @@ const UserPanel = () => {
         }
     };
 
-    // Función para eliminar un pedido
     const handleDeleteOrder = async (orderId) => {
         if (window.confirm("¿Estás seguro de que deseas eliminar este pedido?")) {
             try {
@@ -104,7 +121,6 @@ const UserPanel = () => {
                 if (!response.ok) {
                     throw new Error('Error al eliminar el pedido');
                 }
-                // Refrescar la lista de pedidos
                 fetchOrders();
                 alert('Pedido eliminado con éxito!');
             } catch (error) {
@@ -150,21 +166,33 @@ const UserPanel = () => {
                         required
                     />
                     <label>Tomado por (ID de Usuario)</label>
-                    <input
-                        type="number"
+                    <select
                         name="tomadoPor"
                         value={newOrder.tomadoPor}
                         onChange={handleNewOrderChange}
                         required
-                    />
+                    >
+                        <option value="">Seleccionar Usuario</option>
+                        {users.map(user => (
+                            <option key={user.idUsuario} value={user.idUsuario}>
+                                {user.nombre}
+                            </option>
+                        ))}
+                    </select>
                     <label>A realizar por (ID de Usuario)</label>
-                    <input
-                        type="number"
+                    <select
                         name="aRealizarPor"
                         value={newOrder.aRealizarPor}
                         onChange={handleNewOrderChange}
                         required
-                    />
+                    >
+                        <option value="">Seleccionar Usuario</option>
+                        {users.map(user => (
+                            <option key={user.idUsuario} value={user.idUsuario}>
+                                {user.nombre}
+                            </option>
+                        ))}
+                    </select>
                     <label>Ingreso por</label>
                     <select
                         name="ingresoPor"
@@ -250,13 +278,11 @@ const UserPanel = () => {
 
             <div className="current-orders">
                 <h2>Pedidos Actuales</h2>
-
-                {/* Mostrar mensaje de carga o error */}
-                {loading && <p>Cargando pedidos...</p>}
-                {error && <p>Error: {error}</p>}
-
-                {/* Mostrar pedidos si están disponibles */}
-                {!loading && !error && (
+                {loading ? (
+                    <p>Cargando pedidos...</p>
+                ) : error ? (
+                    <p>{error}</p>
+                ) : (
                     <table>
                         <thead>
                             <tr>
@@ -265,16 +291,16 @@ const UserPanel = () => {
                                 <th>Seña</th>
                                 <th>Fecha Fin</th>
                                 <th>Importe Total</th>
-                                <th>Facturado</th>
                                 <th>Tomado Por</th>
                                 <th>A Realizar Por</th>
                                 <th>Ingreso Por</th>
-                                <th>Método de Pago</th>
+                                <th>Método Pago</th>
                                 <th>ID Cliente</th>
                                 <th>Estado</th>
                                 <th>Descripción</th>
                                 <th>Cantidad</th>
                                 <th>Categoría</th>
+                                <th>Facturado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -282,11 +308,10 @@ const UserPanel = () => {
                             {orders.map(order => (
                                 <tr key={order.idPedido}>
                                     <td>{order.idPedido}</td>
-                                    <td>{new Date(order.fechaIngreso).toLocaleDateString()}</td>
+                                    <td>{formatDate(order.fechaIngreso)}</td> {/* Formatear fecha de ingreso */}
                                     <td>{order.senia}</td>
-                                    <td>{new Date(order.fechaFin).toLocaleDateString()}</td>
+                                    <td>{formatDate(order.fechaFin)}</td> {/* Formatear fecha de fin */}
                                     <td>{order.importeTotal}</td>
-                                    <td>{order.facturado ? 'Sí' : 'No'}</td>
                                     <td>{order.tomadoPor}</td>
                                     <td>{order.aRealizarPor}</td>
                                     <td>{order.ingresoPor}</td>
@@ -296,6 +321,7 @@ const UserPanel = () => {
                                     <td>{order.descripcion}</td>
                                     <td>{order.cantidad}</td>
                                     <td>{order.categoria}</td>
+                                    <td>{order.facturado ? 'Sí' : 'No'}</td>
                                     <td>
                                         <button onClick={() => handleDeleteOrder(order.idPedido)}>Eliminar</button>
                                     </td>

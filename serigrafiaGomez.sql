@@ -32,7 +32,7 @@ CREATE TABLE Pedido (
     estado ENUM('No comenzado', 'En proceso', 'Realizado', 'Entregado'),
     descripcion TEXT NOT NULL,
     cantidad INT NOT NULL,
-    categoria ENUM('Grabado laser', 'Banderas', 'Impresión en prendas', 'Impresión en objetos', 'Cartelería', 'Ploteos', 'Merchandising', 'Otros'),
+    categoria ENUM('Grabados laser', 'Banderas', 'Impresión en prendas', 'Impresión en objetos', 'Cartelería', 'Ploteos', 'Merchandising', 'Otros'),
     FOREIGN KEY (tomadoPor) REFERENCES Usuario(idUsuario),
     FOREIGN KEY (aRealizarPor) REFERENCES Usuario(idUsuario),
     FOREIGN KEY (idCliente) REFERENCES Cliente(idCliente)

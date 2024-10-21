@@ -3,6 +3,7 @@ const cors = require('cors');
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const db = require('./db'); // Asegúrate de que la ruta sea correcta
 require('dotenv').config();
 
 const app = express();
@@ -73,6 +74,15 @@ app.post('/login', async (req, res) => {
     }
 });
 
+// Ruta para obtener todos los usuarios
+app.get('/usuarios', (req, res) => {
+    connection.query('SELECT idUsuario, nombre FROM Usuario', (err, results) => {
+        if (err) return handleError(res, err, 'Error al obtener usuarios');
+
+        res.json(results);
+    });
+});
+
 // Ruta para registrar un nuevo usuario
 app.post('/register', async (req, res) => {
     const { nombre, email, password, role } = req.body;
@@ -125,7 +135,7 @@ app.get('/clientes', (req, res) => {
 app.post('/nuevo-pedido', (req, res) => {
     const { fechaIngreso, senia, fechaFin, importeTotal, facturado, tomadoPor, aRealizarPor, ingresoPor, metodoPago, idCliente, estado, descripcion, cantidad, categoria } = req.body;
 
-    if (!fechaIngreso || !importeTotal || !idCliente || !descripcion || !cantidad || !categoria) {
+    if (!fechaIngreso || !importeTotal || !idCliente || !descripcion || !cantidad || !categoria || !tomadoPor) {
         return res.status(400).json({ message: 'Por favor, completa todos los campos del pedido.' });
     }
 
@@ -139,11 +149,37 @@ app.post('/nuevo-pedido', (req, res) => {
     );
 });
 
-// Ruta para obtener todos los pedidos
+// Ruta para obtener pedidos
 app.get('/pedidos', (req, res) => {
-    connection.query('SELECT * FROM PEDIDO', (err, results) => {
-        if (err) return handleError(res, err, 'Error al obtener los pedidos');
-
+    const query = `
+        SELECT 
+            p.idPedido,
+            p.fechaIngreso,
+            p.senia,
+            p.fechaFin,
+            p.importeTotal,
+            p.facturado,
+            u1.nombre AS tomadoPor,
+            u2.nombre AS aRealizarPor,
+            p.ingresoPor,
+            p.metodoPago,
+            p.idCliente,
+            p.estado,
+            p.descripcion,
+            p.cantidad,
+            p.categoria
+        FROM 
+            Pedido p
+        INNER JOIN 
+            Usuario u1 ON p.tomadoPor = u1.idUsuario
+        INNER JOIN 
+            Usuario u2 ON p.aRealizarPor = u2.idUsuario
+    `;
+    
+    db.query(query, (error, results) => {
+        if (error) {
+            return res.status(500).json({ error: 'Error al obtener pedidos' });
+        }
         res.json(results);
     });
 });
