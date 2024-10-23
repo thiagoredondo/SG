@@ -36,18 +36,18 @@ const SeguiTuPedido = () => {
     };
 
     return (
-        <section className="hero-section" style={{ backgroundImage: `url(/Imagenes/IMG-20220824-WA0016.jpg)` }}>
-            <div className="contact-container">
-                <form onSubmit={handleSubmit} className="contact-left">
-                    <div className="contact-left-title">
-                        <h2>Ingresa</h2>
+        <section className="hero-section-stp" style={{ backgroundImage: `url(/Imagenes/IMG-20220824-WA0016.jpg)` }}>
+            <div className="contact-container-stp">
+                <form onSubmit={handleSubmit} className="contact-left-stp">
+                    <div className="contact-left-title-stp">
+                        <h2>Bienvenido</h2>
                         <hr />
                     </div>
                     <input
                         type="email"
                         name="email"
                         placeholder="Email"
-                        className="contact-inputs"
+                        className="contact-inputs-stp"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
@@ -56,13 +56,12 @@ const SeguiTuPedido = () => {
                         type="password"
                         name="password"
                         placeholder="Contraseña"
-                        className="contact-inputs"
+                        className="contact-inputs-stp"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
-                    <button type="submit" className="link-button">
-                        Ingresar <img src="/Imagenes/arrow_icon.png" alt="Icono de flecha" />
+                    <button type="submit" className="link-button-stp"><img src="/Imagenes/arrow_icon.png" alt="Icono de flecha" />
                     </button>
                 </form>
             </div>

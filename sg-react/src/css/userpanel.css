@@ -1,10 +1,3 @@
-@charset "UTF-8";
-#root {
-  padding: 0;
-  margin: 0;
-  width: fit-content;
-}
-
 .user-panel-container {
   display: flex;
   background-color: #d5ebf7;
@@ -23,7 +16,7 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  width: 16%; /* Ancho ajustado al 25% del total */
+  width: 16%;
 }
 
 .new-order h2,
@@ -56,14 +49,14 @@
 .new-client {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Alinea el contenido al inicio */
-  width: 100%; /* Asegura que el contenedor use el ancho completo */
+  justify-content: flex-start;
+  width: 100%;
 }
 
 .new-client form {
   display: flex;
-  flex-wrap: wrap; /* Permite que los elementos se distribuyan en múltiples líneas */
-  justify-content: space-between; /* Espacio uniforme entre elementos */
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .new-order label,
@@ -107,7 +100,7 @@
 .right-panel {
   display: flex;
   flex-direction: column;
-  width: 84%; /* Ajusta para ocupar el 75% restante */
+  width: 84%;
   padding-left: 1%;
   box-sizing: border-box;
   height: auto;
@@ -153,25 +146,25 @@
 }
 
 .client-list {
-  width: 100%; /* Asegura que el contenedor de la tabla use el ancho completo */
+  width: 100%;
 }
 
 .client-list table {
-  width: 100%; /* Asegura que la tabla ocupe el 100% del contenedor */
-  border-collapse: collapse; /* Elimina el espacio entre las celdas */
+  width: 100%;
+  border-collapse: collapse;
 }
 
 .client-list th,
 .client-list td {
-  padding: 10px; /* Espaciado interno de las celdas */
-  text-align: left; /* Alineación del texto */
-  border-bottom: 2px solid #ccc; /* Línea de separación */
-  width: 25%; /* Ajusta el ancho de las columnas para distribuir equitativamente */
+  padding: 10px;
+  text-align: left;
+  border-bottom: 2px solid #ccc;
+  width: 25%;
 }
 
 .client-list th {
-  background-color: #f2f2f2; /* Color de fondo para los encabezados */
-  font-weight: bold; /* Negrita para los encabezados */
+  background-color: #f2f2f2;
+  font-weight: bold;
 }
 
 .current-orders select,

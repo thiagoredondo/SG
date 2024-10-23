@@ -1,162 +1,3 @@
-.header-landing {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #313638;
-  padding: 0;
-  justify-content: center;
-}
-
-.menu-header-section {
-  padding: 0;
-  display: flex;
-  justify-content: center;
-}
-
-.wrap-menu-header-section ul {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 40px;
-  margin: 0;
-  padding: 0;
-}
-.wrap-menu-header-section ul li {
-  font-size: 1.2rem;
-  padding: 1.5rem;
-  color: #fff;
-  list-style: none;
-}
-
-.wrap-cta {
-  padding: 1.5rem 0;
-}
-
-.cta-a {
-  color: #fff;
-  font-weight: bolder;
-  font-size: 1.2rem;
-  background-color: #76c5f0;
-  padding: 0.5rem 1rem;
-  border-radius: 0.2rem;
-}
-
-@media (max-width: 480px) {
-  .header-landing {
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    padding: 0;
-    width: 100%;
-    min-height: 70px;
-  }
-  .wrap-logo {
-    max-height: 50px;
-  }
-  .logo-header {
-    width: 50px;
-    padding-left: 0;
-  }
-  .menu-header-section {
-    flex-grow: 1;
-    padding: 0;
-  }
-  .wrap-menu-header-section {
-    justify-content: space-between;
-    width: 100%;
-  }
-  .wrap-menu-header-section ul {
-    justify-content: space-evenly;
-  }
-  .wrap-menu-header-section ul li {
-    padding: 0.1rem 0.2rem;
-    font-size: 0.6rem;
-  }
-}
-@media (min-width: 481px) {
-  html, body {
-    overflow-x: hidden;
-  }
-  .header-landing {
-    padding: 0;
-    justify-content: center;
-  }
-  .wrap-logo {
-    margin: 0;
-    padding: 20px;
-    max-width: 130px;
-  }
-  .logo-header {
-    width: 90px;
-  }
-  .menu-header-section {
-    padding: 0;
-    justify-content: center;
-  }
-  .wrap-menu-header-section {
-    width: 100%;
-  }
-  .wrap-menu-header-section ul {
-    justify-content: center;
-    margin: 0;
-    padding: 0;
-    gap: 25px;
-  }
-  .wrap-menu-header-section ul li {
-    padding: 0.5rem 1rem;
-  }
-}
-.footer-section {
-  max-width: max;
-  background-color: #313638;
-  width: 100%;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0;
-}
-
-.wrap-social-logos ul {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 70px;
-  align-items: start;
-  margin: 0;
-  padding: 0;
-}
-.wrap-social-logos ul .social-logo {
-  max-width: 50px;
-  width: 100%;
-  padding: 1rem;
-}
-
-.footer-creds {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-  background-color: #313638;
-  height: 55px;
-}
-
-@media (max-width: 480px) {
-  .footer-creds {
-    text-align: center;
-    padding: 0 0.5rem;
-  }
-  .footer-creds p {
-    font-size: 0.6rem;
-    font-weight: 100;
-  }
-}
-@media (min-width: 481px) {
-  .footer-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-}
 /** Estilos Generales **/
 html,
 body {
@@ -192,11 +33,11 @@ h3 {
 }
 
 /** Boton **/
-.wrap-cta {
+.wrap-cta-sv {
   padding: 1.5rem 0;
 }
 
-.cta-a {
+.cta-a-sv {
   color: #fff;
   font-weight: bolder;
   font-size: 1.2rem;
@@ -206,11 +47,10 @@ h3 {
 }
 
 /** Hero Section **/
-.wrap-hero-section {
+.wrap-hero-section-sv {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 1200px;
   color: #fff;
   padding: 5%;
   font-weight: bold;
@@ -218,29 +58,25 @@ h3 {
   margin-bottom: 0;
 }
 
-.hero-section {
-  background-color: transparent;
-}
-
-.wrap-pic-hero-section {
+.wrap-pic-hero-section-sv {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 15px;
   padding: 20px;
 }
-.wrap-pic-hero-section ul {
+.wrap-pic-hero-section-sv ul {
   padding: 0;
   margin: 0;
   display: contents;
 }
-.wrap-pic-hero-section ul li {
+.wrap-pic-hero-section-sv ul li {
   flex: 0 1 calc(25% - 15px);
   height: 0;
   padding-bottom: 100%;
   position: relative;
 }
-.wrap-pic-hero-section ul li img {
+.wrap-pic-hero-section-sv ul li img {
   position: absolute;
   top: 0;
   left: 0;
@@ -250,29 +86,29 @@ h3 {
   object-fit: cover;
   transition: transform 0.3s ease;
 }
-.wrap-pic-hero-section ul li img:hover {
+.wrap-pic-hero-section-sv ul li img:hover {
   transform: scale(1.05);
 }
 
 /** Footer **/
-.footer-section {
+.footer-section-sv {
   max-width: 100%;
   margin: 0 auto;
   background-color: #313638;
 }
-.footer-section .wrap-social-logos ul {
+.footer-section-sv .wrap-social-logos-sv ul {
   display: flex;
   justify-content: center;
   height: 70px;
-  align-items: start;
+  align-items: flex-start;
   margin: 0;
 }
-.footer-section .wrap-social-logos ul .social-logo {
+.footer-section-sv .wrap-social-logos-sv ul .social-logo-sv {
   max-width: 50px;
   width: 100%;
   padding: 1rem;
 }
-.footer-section .footer-creds {
+.footer-section-sv .footer-creds-sv {
   display: flex;
   justify-content: center;
   color: #fff;
@@ -295,52 +131,52 @@ h3 {
     font-size: 1.5rem;
   }
   /** Header **/
-  .cta-a {
+  .cta-a-sv {
     font-size: 0.6rem;
     padding: 5px;
   }
   /** Hero Section **/
-  .body-hero-section {
+  .body-hero-section-sv {
     background-size: cover;
     overflow: hidden;
   }
-  .body-hero-section .wrap-pic-hero-section {
+  .body-hero-section-sv .wrap-pic-hero-section-sv {
     flex-wrap: wrap;
     padding: 5%;
   }
-  .body-hero-section .wrap-pic-hero-section li {
+  .body-hero-section-sv .wrap-pic-hero-section-sv li {
     flex: 100%;
   }
   /** Footer **/
-  .footer-section {
+  .footer-section-sv {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 0;
   }
-  .footer-section .footer-creds {
+  .footer-section-sv .footer-creds-sv {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
   }
-  .footer-section .footer-creds p {
+  .footer-section-sv .footer-creds-sv p {
     font-size: 0.6rem;
     font-weight: 100;
   }
 }
 @media (min-width: 481px) {
   /** Header **/
-  .header-landing {
+  .header-landing-sv {
     flex-direction: row;
   }
   /** Hero Section **/
-  .body-hero-section {
+  .body-hero-section-sv {
     background: url(/public/Imagenes/IMG-20220824-WA0016.jpg) center no-repeat;
     background-size: cover;
     background-blend-mode: multiply;
     display: grid;
     grid-template-rows: auto 1fr;
   }
-  .body-hero-section .wrap-pic-hero-section {
+  .body-hero-section-sv .wrap-pic-hero-section-sv {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 35px;

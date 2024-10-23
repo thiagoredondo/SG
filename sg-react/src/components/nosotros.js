@@ -3,8 +3,8 @@ import '../css/nosotros.css';
 
 const Nosotros = () => {
     return (
-        <section className="hero-section" style={{ backgroundImage: `url(/Imagenes/IMG-20220824-WA0016.jpg)` }}>
-            <div className="wrap-hero-section">
+        <section className="hero-section-us" style={{ backgroundImage: `url(/Imagenes/IMG-20220824-WA0016.jpg)` }}>
+            <div className="wrap-hero-section-us">
                 <h1>Nuestra historia</h1>
                 <p>
                     En Serigrafía Gómez, comenzamos nuestra historia a fines de la década de los 60’ en Bahía Blanca, con la visión de ofrecer productos impresos de alta calidad y una amplia variedad de servicios gráficos.

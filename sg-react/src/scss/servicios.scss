@@ -1,7 +1,3 @@
-// Import header styles
-@use "header.scss";
-@use "footer.scss";
-
 $main-color: #76c5f0;
 $border-radius: .2rem;
 
@@ -40,11 +36,11 @@ h3 {
 }
 
 /** Boton **/
-.wrap-cta {
+.wrap-cta-sv {
   padding: 1.5rem 0;
 }
 
-.cta-a {
+.cta-a-sv {
   color: #fff;
   font-weight: bolder;
   font-size: 1.2rem;
@@ -54,11 +50,10 @@ h3 {
 }
 
 /** Hero Section **/
-.wrap-hero-section {
+.wrap-hero-section-sv {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 1200px;
   color: #fff;
   padding: 5%;
   font-weight: bold;
@@ -66,7 +61,7 @@ h3 {
   margin-bottom: 0;
 }
 
-.wrap-pic-hero-section {
+.wrap-pic-hero-section-sv {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -103,20 +98,20 @@ h3 {
 }
 
 /** Footer **/
-.footer-section {
+.footer-section-sv {
   max-width: 100%;
   margin: 0 auto;
   background-color: #313638;
 
-  .wrap-social-logos {
+  .wrap-social-logos-sv {
     ul {
       display: flex;
       justify-content: center;
       height: 70px;
-      align-items: start;
+      align-items: flex-start;
       margin: 0;
 
-      .social-logo {
+      .social-logo-sv {
         max-width: 50px;
         width: 100%;
         padding: 1rem;
@@ -124,7 +119,7 @@ h3 {
     }
   }
 
-  .footer-creds {
+  .footer-creds-sv {
     display: flex;
     justify-content: center;
     color: #fff;
@@ -151,17 +146,17 @@ h3 {
   }
 
   /** Header **/
-    .cta-a {
-      font-size: 0.6rem;
-      padding: 5px;
-    }
+  .cta-a-sv {
+    font-size: 0.6rem;
+    padding: 5px;
+  }
 
   /** Hero Section **/
-  .body-hero-section {
+  .body-hero-section-sv {
     background-size: cover;
     overflow: hidden;
 
-    .wrap-pic-hero-section {
+    .wrap-pic-hero-section-sv {
       flex-wrap: wrap;
       padding: 5%;
 
@@ -172,13 +167,13 @@ h3 {
   }
 
   /** Footer **/
-  .footer-section {
+  .footer-section-sv {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 0;
 
-    .footer-creds {
+    .footer-creds-sv {
       padding-left: 0.5rem;
       padding-right: 0.5rem;
 
@@ -192,19 +187,19 @@ h3 {
 
 @media (min-width: 481px) {
   /** Header **/
-  .header-landing {
+  .header-landing-sv {
     flex-direction: row;
   }
 
   /** Hero Section **/
-  .body-hero-section {
+  .body-hero-section-sv {
     background: url(/public/Imagenes/IMG-20220824-WA0016.jpg) center no-repeat;
     background-size: cover;
     background-blend-mode: multiply;
     display: grid;
     grid-template-rows: auto 1fr;
 
-    .wrap-pic-hero-section {
+    .wrap-pic-hero-section-sv {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 35px;

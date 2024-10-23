@@ -3,8 +3,8 @@ import '../css/index.css';
 
 function Main() {
     return (
-        <section className="hero-section" style={{ backgroundImage: `url(/Imagenes/IMG-20220824-WA0016.jpg)` }}>
-            <div className="wrap-hero-section">
+        <section className="hero-section-dx" style={{ backgroundImage: `url(/Imagenes/IMG-20220824-WA0016.jpg)` }}>
+            <div className="wrap-hero-section-dx">
                 <h1>Serigrafía Gómez</h1>
                 <p>
                     En Serigrafía Gómez ofrecemos servicios especializados en la impresión de diseños y logotipos en diversos materiales y productos mediante la técnica de serigrafía.
@@ -15,8 +15,8 @@ function Main() {
                 <p>
                     Nuestro enfoque principal es brindar soluciones visuales para empresas y particulares que buscan destacar su marca o identidad a través de productos personalizados.
                 </p>
-                <div className="wrap-cta">
-                    <a href="/servicios" className="cta-a">CONÓCENOS</a>
+                <div className="wrap-cta-dx">
+                    <a href="/servicios" className="cta-a-dx">CONÓCENOS</a>
                 </div>
             </div>
         </section>

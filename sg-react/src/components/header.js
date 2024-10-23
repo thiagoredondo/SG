@@ -15,7 +15,7 @@ return (
             <li><Link to="/servicios">Servicios</Link></li> 
             <li><Link to="/nosotros">Nosotros</Link></li> 
             <li><Link to="/contacto">Contacto</Link></li>
-            <li><Link to="/seguitupedido" className="cta-a">Seguí tu pedido</Link></li> 
+            <li><Link to="/seguitupedido" className="cta-a">INGRESAR</Link></li> 
         </ul>
         </nav>
     </div>

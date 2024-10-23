@@ -1,19 +1,15 @@
-// Import
-@use 'header.scss';
-@use 'footer.scss';
-
 // Variables
-$main-color: #76c5f0;
-$border-radius: .2rem;
+$main-color-ct: #76c5f0;
+$border-radius-ct: .2rem;
 
 // Mixins
-@mixin flex-center {
+@mixin flex-center-ct {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-@mixin responsive-font-size($size) {
+@mixin responsive-font-size-ct($size) {
     font-size: $size;
 }
 
@@ -53,23 +49,23 @@ h3 {
 }
 
 // Button styles
-.wrap-cta {
+.wrap-cta-ct {
     padding: 1.5rem 0;
 }
 
-.cta-a {
+.cta-a-ct {
     color: #fff;
     font-weight: bolder;
     font-size: 1.2rem;
-    background-color: $main-color;
+    background-color: $main-color-ct;
     padding: .5rem 1rem;
-    border-radius: $border-radius;
+    border-radius: $border-radius-ct;
 }
 
 // Hero Section
-.hero-section {
+.hero-section-ct {
     flex: 1;
-    height:fit-content;
+    height: fit-content;
     background: url(/public/Imagenes/IMG-20220824-WA0016.jpg) center no-repeat;
     background-size: cover;
     background-color: rgba(106, 141, 163, 0.7);
@@ -78,8 +74,8 @@ h3 {
     align-items: center;
 }
 
-.contact-container {
-    @include flex-center;
+.contact-container-ct {
+    @include flex-center-ct;
     padding-left: 30px;
     padding-right: 30px;
     padding-top: 20px;
@@ -91,7 +87,7 @@ h3 {
     justify-content: center;
 }
 
-.contact-left {
+.contact-left-ct {
     background-color: rgba(53, 53, 53, 0.5);
     padding: 3%;
     border-radius: 40px;
@@ -103,19 +99,19 @@ h3 {
     max-width: 400px;
     max-height: 600px;
     flex-direction: column;
-    align-items: start;
+    align-items: flex-start;
     gap: 15px;
     flex: 1;
     justify-content: space-evenly;
 }
 
-.contact-left-form {
+.contact-left-form-ct {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-.contact-right {
+.contact-right-ct {
     width: 50%;
     min-width: 400px;
     height: auto;
@@ -123,7 +119,7 @@ h3 {
     flex: 1;
 }
 
-.serigrafia-map {
+.serigrafia-map-ct {
     width: 100%;
     height: 100%;
     border: none;
@@ -132,23 +128,23 @@ h3 {
 }
 
 // Contact title
-.contact-left-title h2 {
+.contact-left-title-ct h2 {
     font-weight: bolder;
     color: #fff;
     font-size: 40px;
     margin: 0;
 }
 
-.contact-left-title hr {
+.contact-left-title-ct hr {
     border: none;
     width: 100%;
     height: 5px;
-    background-color: $main-color;
+    background-color: $main-color-ct;
     border-radius: 10px;
 }
 
 // Input styles
-.contact-inputs {
+.contact-inputs-ct {
     width: 95%;
     height: 60px;
     border: none;
@@ -161,7 +157,7 @@ h3 {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.contact-inputs-textarea {
+.contact-inputs-textarea-ct {
     width: 90%;
     height: 170px;
     border: none;
@@ -174,44 +170,44 @@ h3 {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.contact-inputs:focus,
-.contact-inputs-textarea:focus {
-    box-shadow: inset 0 0 0 5px $main-color;
+.contact-inputs-ct:focus,
+.contact-inputs-textarea-ct:focus {
+    box-shadow: inset 0 0 0 5px $main-color-ct;
 }
 
-.contact-inputs::placeholder,
-.contact-inputs-textarea::placeholder {
+.contact-inputs-ct::placeholder,
+.contact-inputs-textarea-ct::placeholder {
     color: #313638;
 }
 
 // Button styles
-.contact-left button {
-    @include flex-center;
+.contact-left-ct button {
+    @include flex-center-ct;
     padding: 15px 30px;
     font-size: 16px;
     color: #fff;
     gap: 10px;
     border: none;
     border-radius: 10px;
-    background: linear-gradient(270deg, $main-color, #adadad);
+    background: linear-gradient(270deg, $main-color-ct, #adadad);
     cursor: pointer;
     font-weight: bolder;
 }
 
-.contact-left button img {
+.contact-left-ct button img {
     height: 20px;
 }
 
 @media (max-width: 480px) {
     html, body {
-        overflow-x: hidden
+        overflow-x: hidden;
     }
-    .cta-a {
-        @include responsive-font-size(0.6rem);
+    .cta-a-ct {
+        @include responsive-font-size-ct(0.6rem);
         padding: 5px;
     }    
-    .contact-container {
-        @include flex-center;
+    .contact-container-ct {
+        @include flex-center-ct;
         padding: 5%;
         width: 90%;
         gap: 20px;
@@ -220,7 +216,7 @@ h3 {
         justify-content: center;
     }
     
-    .contact-left {
+    .contact-left-ct {
         background-color: rgba(53, 53, 53, 0.5);
         padding: 5%;
         border-radius: 40px;
@@ -232,24 +228,24 @@ h3 {
         max-width: 400px;
         max-height: 600px;
         flex-direction: column;
-        align-items: start;
+        align-items: flex-start;
         gap: 20px;
     }
     
-    .contact-left-form {
+    .contact-left-form-ct {
         display: flex;
         flex-direction: column;
         gap: 20px;
     }
         
-    .contact-right {
+    .contact-right-ct {
         width: auto;
         min-width: 200px;
         height: auto;
         display: flex;
     }
     
-    .serigrafia-map {
+    .serigrafia-map-ct {
         width: 100%;
         height: 100%;
         border: none;
@@ -257,24 +253,24 @@ h3 {
     }
     
     // Contact title
-    .contact-left-title h2 {
+    .contact-left-title-ct h2 {
         font-weight: bolder;
         color: #fff;
         font-size: 25px;
         margin: 0;
     }
     
-    .contact-left-title hr {
+    .contact-left-title-ct hr {
         border: none;
         width: 100%;
         height: 5px;
-        background-color: $main-color;
+        background-color: $main-color-ct;
         border-radius: 10px;
         margin-bottom: 20px;
     }
     
     // Input styles
-    .contact-inputs {
+    .contact-inputs-ct {
         width: 90%;
         height: 50px;
         border: none;
@@ -284,11 +280,11 @@ h3 {
         font-weight: 500;
         color: #000;
         border-radius: 10px;
-        @include responsive-font-size(0.8rem);
+        @include responsive-font-size-ct(0.8rem);
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     
-    .contact-inputs-textarea {
+    .contact-inputs-textarea-ct {
         width: 90%;
         height: 140px;
         border: none;
@@ -297,35 +293,35 @@ h3 {
         font-weight: 500;
         color: #000;
         border-radius: 10px;
-        @include responsive-font-size(0.8rem);
+        @include responsive-font-size-ct(0.8rem);
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     
-    .contact-inputs:focus,
-    .contact-inputs-textarea:focus {
-        box-shadow: inset 0 0 0 5px $main-color;
+    .contact-inputs-ct:focus,
+    .contact-inputs-textarea-ct:focus {
+        box-shadow: inset 0 0 0 5px $main-color-ct;
     }
     
-    .contact-inputs::placeholder,
-    .contact-inputs-textarea::placeholder {
+    .contact-inputs-ct::placeholder,
+    .contact-inputs-textarea-ct::placeholder {
         color: #313638;
     }
     
     // Button styles
-    .contact-left button {
-        @include flex-center;
+    .contact-left-ct button {
+        @include flex-center-ct;
         padding: 15px 30px;
-        @include responsive-font-size(0.8rem);
+        @include responsive-font-size-ct(0.8rem);
         color: #fff;
         gap: 10px;
         border: none;
         border-radius: 10px;
-        background: linear-gradient(270deg, $main-color, #adadad);
+        background: linear-gradient(270deg, $main-color-ct, #adadad);
         cursor: pointer;
         font-weight: bolder;
     }
     
-    .contact-left button img {
+    .contact-left-ct button img {
         height: 15px;
     }
 }
