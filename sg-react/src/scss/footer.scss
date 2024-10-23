@@ -1,0 +1,68 @@
+// Mixins
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin responsive-font-size($size) {
+    font-size: $size;
+}
+
+// Footer Section Styles
+.footer-section {
+    max-width: max;
+    background-color: #313638;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+}
+
+.wrap-social-logos {
+    ul {
+        @include flex-center;
+        height: 70px;
+        align-items: start;
+        margin: 0;
+        padding: 0;
+
+        .social-logo {
+            max-width: 50px;
+            ;
+            width: 100%;
+            padding: 1rem;
+        }
+    }
+}
+
+.footer-creds {
+    @include flex-center;
+    color: #fff;
+    background-color: #313638;
+    height: 55px;
+}
+
+// Media Queries
+
+@media (max-width: 480px) {
+    .footer-creds {
+        text-align: center;
+        padding: 0 0.5rem;
+
+        p {
+            @include responsive-font-size(0.6rem);
+            font-weight: 100;
+        }
+    }
+}
+
+@media (min-width: 481px) {
+    .footer-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}

@@ -1,0 +1,163 @@
+// Import header styles
+@use 'header.scss';
+@use "footer.scss";
+
+// Variables
+$main-color: #76c5f0;
+$border-radius: .2rem;
+$font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+$header-bg-color: #313638;
+$hero-bg-blend: rgba(106, 141, 163, 0.7);
+$social-logo-max-width: 50px;
+
+// Mixins
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin responsive-font-size($size) {
+    font-size: $size;
+}
+
+// Reset & General Styles
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: $font-family;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+p {
+    @include responsive-font-size(1.1rem);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul, li {
+    list-style: none;
+}
+
+h1 {
+    @include responsive-font-size(2.8rem);
+}
+
+h2 {
+    @include responsive-font-size(2.5rem);
+}
+
+h3 {
+    @include responsive-font-size(2.2rem);
+}
+
+// Button styles
+.wrap-cta {
+    padding: 1.5rem 0;
+}
+
+.cta-a {
+    color: #fff;
+    font-weight: bolder;
+    @include responsive-font-size(1.2rem);
+    background-color: $main-color;
+    padding: .5rem 1rem;
+    border-radius: $border-radius;
+}
+
+// Hero Section
+.hero-section {
+    flex: 1;
+    height: 100%;
+    background: url(/public/Imagenes/IMG-20220824-WA0016.jpg) center no-repeat;
+    background-size: cover;
+    background-color: $hero-bg-blend;
+    background-blend-mode: multiply;
+    @include flex-center;
+}
+
+.wrap-hero-section {
+    max-width: 600px;
+    color: #fff;
+    padding: 0 25%;
+    font-weight: bold;
+}
+
+.wrap-social-logos {
+    ul {
+        @include flex-center;
+        height: 70px;
+        align-items: start;
+        margin: 0;
+
+        .social-logo {
+            max-width: $social-logo-max-width;
+            width: 100%;
+            padding: 1rem;
+        }
+    }
+}
+
+.footer-creds {
+    @include flex-center;
+    color: #fff;
+    background-color: $header-bg-color;
+    height: 55px;
+}
+
+// Media Queries
+@media (max-width: 480px) {
+    html, body {
+        overflow: hidden;
+    }
+
+    p {
+        @include responsive-font-size(0.8rem);
+        font-weight: 500;
+    }
+
+    h1 {
+        @include responsive-font-size(1.5rem);
+    }
+
+    .cta-a {
+        @include responsive-font-size(0.6rem);
+        padding: 5px;
+    }
+
+    .wrap-hero-section {
+        padding: 5%;
+    }
+
+    .footer-creds {
+        text-align: center;
+        padding: 0 0.5rem;
+
+        p {
+            @include responsive-font-size(0.6rem);
+            font-weight: 100;
+        }
+    }
+}
+
+@media (min-width: 481px) {
+    html, body {
+        height: 100%;
+    }
+
+    .hero-section {
+        flex: 1;
+        @include flex-center;
+    }
+
+    .footer-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}

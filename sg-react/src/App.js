@@ -9,45 +9,28 @@ import Nosotros from './components/nosotros';
 import SeguiTuPedido from './components/seguitupedido';
 import UserPanel from './components/userpanel';
 import ClientPanel from './components/clientpanel';
-import './styles/style-index.css'; 
-import './styles/style-footer.css'; 
-import './styles/style-header.css';
+import './css/index.css';
+import './css/servicios.css';  
+import './css/nosotros.css'; 
+import './css/contacto.css'; 
+import './css/seguimiento-pedido.css'; 
+import './css/footer.css'; 
+import './css/header.css';
 
 function App() {
   return (
     <Router>
+      <Header />
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/contacto" element={<Contacto />} />
         <Route path="/servicios" element={<Servicios />} />
         <Route path="/nosotros" element={<Nosotros />} />
         <Route path="/seguitupedido" element={<SeguiTuPedido />} />
-        
-        {/* Cambiado para no mostrar Header y Footer en el UserPanel */}
-        <Route 
-          path="/userpanel" 
-          element={<UserPanel />} 
-        />
-        
-        <Route 
-          path="/clientpanel" 
-          element={
-            <>
-              <Header />
-              <ClientPanel />
-              <Footer />
-            </>
-          } 
-        />
+        <Route path="/userpanel" element={<UserPanel />} />
+        <Route path="/clientpanel" element={<ClientPanel />} />
       </Routes>
-      
-      {/* Mostrar Header y Footer solo en rutas diferentes a /userpanel */}
-      {window.location.pathname !== "/userpanel" && (
-        <>
-          <Header />
-          <Footer />
-        </>
-      )}
+      <Footer />
     </Router>
   );
 }

@@ -46,7 +46,6 @@
 
 .new-order input,
 .new-order select,
-.new-client input,
 .new-client select {
     padding: 8px;
     border-radius: 4px;
@@ -54,10 +53,27 @@
     margin-bottom: 10px; 
 }
 
+.new-client {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Alinea el contenido al inicio */
+    width: 100%; /* Asegura que el contenedor use el ancho completo */
+}
+
+.new-client form {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los elementos se distribuyan en múltiples líneas */
+    justify-content: space-between; /* Espacio uniforme entre elementos */
+}
+
 .new-order label,
-.new-order textarea,
 .new-order button {
     margin-bottom: 5px;
+}
+
+.new-order textarea {
+    border-radius: 4px;
+    border: 1px solid #ccc;
 }
 
 .new-order textarea {
@@ -73,6 +89,9 @@
 
 .new-client input {
     width: 187px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    padding-inline: 8px;
 }
 
 .new-order button {
@@ -129,6 +148,32 @@
     border-bottom: 2px solid #ccc;
 }
 
+.current-orders th {
+    background-color: #f2f2f2;
+}
+
+.client-list {
+    width: 100%; /* Asegura que el contenedor de la tabla use el ancho completo */
+}
+
+.client-list table {
+    width: 100%; /* Asegura que la tabla ocupe el 100% del contenedor */
+    border-collapse: collapse; /* Elimina el espacio entre las celdas */
+}
+
+.client-list th,
+.client-list td {
+    padding: 10px; /* Espaciado interno de las celdas */
+    text-align: left; /* Alineación del texto */
+    border-bottom: 2px solid #ccc; /* Línea de separación */
+    width: 25%; /* Ajusta el ancho de las columnas para distribuir equitativamente */
+}
+
+.client-list th {
+    background-color: #f2f2f2; /* Color de fondo para los encabezados */
+    font-weight: bold; /* Negrita para los encabezados */
+}
+
 .current-orders select,
 .client-panel select {
     padding: 5px;
@@ -147,7 +192,8 @@
 }
 
 .new-client label {
-    padding: 12px;
+    height: 33px;
+    align-content: center;
 }
 
 .new-client button {

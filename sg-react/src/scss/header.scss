@@ -1,0 +1,138 @@
+// Variables
+$main-color: #76c5f0;
+$border-radius: .2rem;
+$font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+$header-bg-color: #313638;
+
+// Mixins
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin responsive-font-size($size) {
+    font-size: $size;
+}
+
+// Header styles
+.header-landing {
+    @include flex-center;
+    background: $header-bg-color;
+    padding: 0;
+    justify-content: center;
+}
+
+.menu-header-section {
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.wrap-menu-header-section {
+    ul {
+        @include flex-center;
+        height: 40px;
+        margin: 0;
+        padding: 0;
+
+        li {
+            @include responsive-font-size(1.2rem);
+            padding: 1.5rem;
+            color: #fff;
+            list-style: none;
+        }
+    }
+}
+
+.wrap-cta {
+    padding: 1.5rem 0;
+}
+
+.cta-a {
+    color: #fff;
+    font-weight: bolder;
+    font-size: 1.2rem;
+    background-color: $main-color;
+    padding: 0.5rem 1rem;
+    border-radius: $border-radius;
+}
+
+// Media Queries
+@media (max-width: 480px) {
+    .header-landing {
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        padding: 0;
+        width: 100%;
+        min-height: 70px;
+    }
+
+    .wrap-logo {
+        max-height: 50px;
+    }
+
+    .logo-header {
+        width: 50px;
+        padding-left: 0;
+    }
+
+    .menu-header-section {
+        flex-grow: 1;
+        padding: 0;
+    }
+
+    .wrap-menu-header-section {
+        justify-content: space-between;
+        width: 100%;
+
+        ul {
+            justify-content: space-evenly;
+
+            li {
+                padding: 0.1rem 0.2rem;
+                @include responsive-font-size(0.6rem);
+            }
+        }
+    }
+}
+
+
+@media (min-width: 481px) {
+    html, body {
+        overflow-x: hidden;
+    }
+    .header-landing {
+        padding: 0;
+        justify-content: center;
+    }
+
+    .wrap-logo {
+        margin: 0;
+        padding: 20px;
+        max-width: 130px;
+    }
+
+    .logo-header {
+        width: 90px;
+    }
+
+    .menu-header-section {
+        padding: 0;
+        justify-content: center;
+    }
+
+    .wrap-menu-header-section {
+        width: 100%;
+        ul {
+            justify-content: center; 
+            margin: 0;
+            padding: 0;
+            gap: 25px;
+
+            li {
+                padding: 0.5rem 1rem;
+            }
+        }
+    }
+}

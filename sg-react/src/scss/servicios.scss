@@ -1,0 +1,214 @@
+// Import header styles
+@use "header.scss";
+@use "footer.scss";
+
+$main-color: #76c5f0;
+$border-radius: .2rem;
+
+/** Estilos Generales **/
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+p {
+  font-size: 1.1rem;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul,
+li {
+  list-style: none;
+}
+
+h1 {
+  font-size: 2.8rem;
+}
+
+h2 {
+  font-size: 2.5rem;
+}
+
+h3 {
+  font-size: 2.2rem;
+}
+
+/** Boton **/
+.wrap-cta {
+  padding: 1.5rem 0;
+}
+
+.cta-a {
+  color: #fff;
+  font-weight: bolder;
+  font-size: 1.2rem;
+  background-color: $main-color;
+  padding: 0.5rem 1rem;
+  border-radius: $border-radius;
+}
+
+/** Hero Section **/
+.wrap-hero-section {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1200px;
+  color: #fff;
+  padding: 5%;
+  font-weight: bold;
+  box-sizing: border-box;
+  margin-bottom: 0;
+}
+
+.wrap-pic-hero-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  padding: 20px;
+
+  ul {
+    padding: 0;
+    margin: 0;
+    display: contents;
+
+    li {
+      flex: 0 1 calc(25% - 15px);
+      height: 0;
+      padding-bottom: 100%;
+      position: relative;
+
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+
+        &:hover {
+          transform: scale(1.05);
+        }
+      }
+    }
+  }
+}
+
+/** Footer **/
+.footer-section {
+  max-width: 100%;
+  margin: 0 auto;
+  background-color: #313638;
+
+  .wrap-social-logos {
+    ul {
+      display: flex;
+      justify-content: center;
+      height: 70px;
+      align-items: start;
+      margin: 0;
+
+      .social-logo {
+        max-width: 50px;
+        width: 100%;
+        padding: 1rem;
+      }
+    }
+  }
+
+  .footer-creds {
+    display: flex;
+    justify-content: center;
+    color: #fff;
+    background-color: #313638;
+    height: 55px;
+  }
+}
+
+/** Media Queries **/
+@media (max-width: 480px) {
+  /** Estilos Generales **/
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  p {
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  /** Header **/
+    .cta-a {
+      font-size: 0.6rem;
+      padding: 5px;
+    }
+
+  /** Hero Section **/
+  .body-hero-section {
+    background-size: cover;
+    overflow: hidden;
+
+    .wrap-pic-hero-section {
+      flex-wrap: wrap;
+      padding: 5%;
+
+      li {
+        flex: 100%;
+      }
+    }
+  }
+
+  /** Footer **/
+  .footer-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+
+    .footer-creds {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+
+      p {
+        font-size: 0.6rem;
+        font-weight: 100;
+      }
+    }
+  }
+}
+
+@media (min-width: 481px) {
+  /** Header **/
+  .header-landing {
+    flex-direction: row;
+  }
+
+  /** Hero Section **/
+  .body-hero-section {
+    background: url(/public/Imagenes/IMG-20220824-WA0016.jpg) center no-repeat;
+    background-size: cover;
+    background-blend-mode: multiply;
+    display: grid;
+    grid-template-rows: auto 1fr;
+
+    .wrap-pic-hero-section {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 35px;
+      padding: 35px;
+    }
+  }
+}

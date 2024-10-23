@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/userpanel.css';
+import '../css/userpanel.css';
 
 const UserPanel = () => {
     const [orders, setOrders] = useState([]); // Pedidos
