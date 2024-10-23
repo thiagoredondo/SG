@@ -3,7 +3,7 @@ const cors = require('cors');
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const db = require('./db'); // Asegúrate de que la ruta sea correcta
+const db = require('./db');
 require('dotenv').config();
 
 const app = express();
@@ -28,7 +28,7 @@ connection.connect(err => {
 
 // Función de manejo de errores
 const handleError = (res, err, message) => {
-    console.error(message, err);  // Agregado para ver el error completo
+    console.error(message, err);
     return res.status(500).json({ message: 'Error en el servidor. Verifique sus datos.' });
 };
 
@@ -46,7 +46,7 @@ app.post('/login', async (req, res) => {
                 return handleError(res, err, 'Error durante la consulta de login');
             }
 
-            console.log(results); // Agrega esto para depurar
+            console.log(results); // Depuracion
 
             if (results.length === 0) {
                 return res.status(404).json({ message: 'Usuario no encontrado' });
@@ -67,7 +67,7 @@ app.post('/login', async (req, res) => {
             }
 
             const token = jwt.sign({ id: user.idUsuario, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-            res.json({ token, role: user.role }); // Cambiado de ROLE a role
+            res.json({ token, role: user.role });
         });
     } catch (error) {
         return handleError(res, error, 'Error en el servidor durante el login');
@@ -122,6 +122,44 @@ app.post('/clientes', (req, res) => {
     });
 });
 
+// Ruta para actualizar un cliente existente
+app.put('/clientes/:id', (req, res) => {
+    const { id } = req.params;
+    const { nombre, telefono, email } = req.body;
+
+    if (!nombre || !telefono || !email) {
+        return res.status(400).json({ message: 'Por favor, completa todos los campos del cliente.' });
+    }
+
+    connection.query('UPDATE CLIENTE SET NOMBRE = ?, TELEFONO = ?, EMAIL = ? WHERE idCliente = ?', 
+        [nombre, telefono, email, id], 
+        (err, results) => {
+            if (err) return handleError(res, err, 'Error al actualizar el cliente');
+
+            if (results.affectedRows === 0) {
+                return res.status(404).json({ message: 'Cliente no encontrado' });
+            }
+
+            res.json({ message: 'Cliente actualizado con éxito' });
+        }
+    );
+});
+
+// Ruta para eliminar un cliente
+app.delete('/clientes/:id', (req, res) => {
+    const { id } = req.params;
+
+    connection.query('DELETE FROM CLIENTE WHERE idCliente = ?', [id], (err, results) => {
+        if (err) return handleError(res, err, 'Error al eliminar el cliente');
+
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ message: 'Cliente no encontrado' });
+        }
+
+        res.json({ message: 'Cliente eliminado con éxito' });
+    });
+});
+
 // Ruta para obtener todos los clientes
 app.get('/clientes', (req, res) => {
     connection.query('SELECT * FROM CLIENTE', (err, results) => {
@@ -149,6 +187,36 @@ app.post('/nuevo-pedido', (req, res) => {
     );
 });
 
+// Ruta para actualizar un pedido existente
+app.put('/actualizar-pedido/:id', (req, res) => {
+    const { id } = req.params;
+    const { fechaIngreso, senia, fechaFin, importeTotal, facturado, tomadoPor, aRealizarPor, ingresoPor, metodoPago, idCliente, estado, descripcion, cantidad, categoria } = req.body;
+
+    // Validar los campos obligatorios
+    if (!fechaIngreso || !importeTotal || !idCliente || !descripcion || !cantidad || !categoria || !tomadoPor) {
+        return res.status(400).json({ message: 'Por favor, completa todos los campos obligatorios del pedido.' });
+    }
+
+    const query = `
+        UPDATE PEDIDO 
+        SET fechaIngreso = ?, senia = ?, fechaFin = ?, importeTotal = ?, facturado = ?, tomadoPor = ?, aRealizarPor = ?, ingresoPor = ?, metodoPago = ?, idCliente = ?, estado = ?, descripcion = ?, cantidad = ?, categoria = ?
+        WHERE idPedido = ?
+    `;
+
+    connection.query(query, 
+        [fechaIngreso, senia, fechaFin, importeTotal, facturado, tomadoPor, aRealizarPor, ingresoPor, metodoPago, idCliente, estado, descripcion, cantidad, categoria, id], 
+        (err, results) => {
+            if (err) return handleError(res, err, 'Error al actualizar el pedido');
+
+            if (results.affectedRows === 0) {
+                return res.status(404).json({ message: 'Pedido no encontrado' });
+            }
+
+            res.json({ message: 'Pedido actualizado con éxito' });
+        }
+    );
+});
+
 // Ruta para obtener pedidos
 app.get('/pedidos', (req, res) => {
     const query = `
@@ -164,6 +232,7 @@ app.get('/pedidos', (req, res) => {
             p.ingresoPor,
             p.metodoPago,
             p.idCliente,
+            c.nombre AS nombreCliente,  -- Agregar nombre del cliente
             p.estado,
             p.descripcion,
             p.cantidad,
@@ -174,6 +243,8 @@ app.get('/pedidos', (req, res) => {
             Usuario u1 ON p.tomadoPor = u1.idUsuario
         INNER JOIN 
             Usuario u2 ON p.aRealizarPor = u2.idUsuario
+        INNER JOIN
+            Cliente c ON p.idCliente = c.idCliente  -- Hacer JOIN con la tabla Cliente
     `;
     
     db.query(query, (error, results) => {

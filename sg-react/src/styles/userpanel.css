@@ -1,39 +1,78 @@
-.user-panel-container {
-    display: flex;
-    justify-content: space-around;
-    padding: 20px;
-    background-color: #e0f7fa;
+#root {
+    padding: 0;
+    margin: 0;
+    width: fit-content;
 }
 
-.new-order,
-.current-orders {
+.user-panel-container {
+    display: flex;
+    background-color: #d5ebf7;
+    padding: 1%;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 100vh;
+    justify-content: center;
+}
+
+.new-order {
     background-color: white;
-    padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding-inline: 2%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 16%; /* Ancho ajustado al 25% del total */
 }
 
 .new-order h2,
-.current-orders h2 {
+.current-orders h2,
+.new-client h2,
+.client-list h2 {
     font-size: 1.5rem;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 20px;
     margin-bottom: 20px;
 }
+
 
 .new-order form {
     display: flex;
     flex-direction: column;
-}
-
-.new-order label {
-    margin-bottom: 5px;
+    justify-content: space-between;
+    flex-grow: 1;
 }
 
 .new-order input,
-.new-order select {
-    margin-bottom: 15px;
+.new-order select,
+.new-client input,
+.new-client select {
     padding: 8px;
     border-radius: 4px;
     border: 1px solid #ccc;
+    margin-bottom: 10px; 
+}
+
+.new-order label,
+.new-order textarea,
+.new-order button {
+    margin-bottom: 5px;
+}
+
+.new-order textarea {
+    padding: 10px;
+    height: 50px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.new-order div {
+    margin-bottom: 5px;
+    margin-top: 2px;
+}
+
+.new-client input {
+    width: 187px;
 }
 
 .new-order button {
@@ -43,29 +82,76 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    margin-bottom: 30px;
 }
 
-.current-orders table {
+.right-panel {
+    display: flex;
+    flex-direction: column;
+    width: 84%; /* Ajusta para ocupar el 75% restante */
+    padding-left: 1%;
+    box-sizing: border-box;
+    height: auto;
+}
+
+.current-orders {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 0.5%;
+    box-sizing: border-box;
+    flex-grow: 2;
+    padding-inline: 2%;
+}
+
+.client-panel {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 0.5%;
+    box-sizing: border-box;
+    flex-grow: 1;
+    padding-inline: 2%;
+}
+
+.current-orders table,
+.client-panel table {
     width: 100%;
     border-collapse: collapse;
 }
 
 .current-orders th,
-.current-orders td {
-    padding: 12px;
+.current-orders td,
+.client-list th,
+.client-list td {
+    padding: 10px;
     text-align: left;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 2px solid #ccc;
 }
 
-.current-orders select {
+.current-orders select,
+.client-panel select {
     padding: 5px;
 }
 
-.current-orders button {
+.current-orders button,
+.client-panel button {
     padding: 5px 10px;
     background-color: #000;
     color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    width: 70px;
+    margin-bottom: 1px;
+}
+
+.new-client label {
+    padding: 12px;
+}
+
+.new-client button {
+    padding: 9px;
+    margin-left: 50px;
+    width: 187px;
 }
