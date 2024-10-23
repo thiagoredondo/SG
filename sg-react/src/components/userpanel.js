@@ -67,7 +67,7 @@ const UserPanel = () => {
 
     useEffect(() => {
         fetchOrders();
-        fetchUsers(); // Cargar usuarios cuando el componente se monta
+        fetchUsers();
         fetchClients();
     }, []);
 
@@ -79,7 +79,7 @@ const UserPanel = () => {
                 throw new Error('Error al obtener los clientes');
             }
             const data = await response.json();
-            setClients(data); // Cargar clientes en el estado
+            setClients(data);
         } catch (err) {
             setError(err.message);
         }
@@ -122,30 +122,24 @@ const UserPanel = () => {
         }));
     };
 
-    // Función para manejar el envío del formulario de cliente.
-    const handleNewClientSubmit = async (e) => {
-        e.preventDefault();
-
-        try {
-            const response = await fetch('http://localhost:5000/nuevo-cliente', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newClient),
-            });
-
-            if (!response.ok) {
-                throw new Error('Error al agregar el cliente');
+    const handleDeleteClient = async (clientId) => {
+        if (window.confirm("¿Estás seguro de que deseas eliminar este cliente?")) {
+            try {
+                const response = await fetch(`http://localhost:5000/clientes/${clientId}`, {
+                    method: 'DELETE',
+                });
+    
+                if (!response.ok) {
+                    throw new Error('Error al eliminar el cliente');
+                }
+    
+                alert('Cliente eliminado con éxito!');
+                fetchClients(); // Recargar la lista de clientes después de eliminar
+            } catch (error) {
+                alert(error.message);
             }
-
-            alert('Cliente agregado con éxito!');
-            setNewClient({ nombre: '', email: '', telefono: '', direccion: '' }); // Reiniciar el formulario
-            fetchClients(); // Recargar los clientes
-        } catch (error) {
-            alert(error.message);
         }
-    };
+    };    
 
     const handleNewOrderChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -158,6 +152,69 @@ const UserPanel = () => {
             [name]: updatedValue,
         }));
     };
+
+    const handleEditClient = (clientId) => {
+        const clientToEdit = clients.find(client => client.idCliente === clientId);
+        
+        if (clientToEdit) {
+            setNewClient({
+                id: clientToEdit.idCliente,
+                nombre: clientToEdit.nombre,
+                email: clientToEdit.email,
+                telefono: clientToEdit.telefono,
+            });
+            setIsEditing(true); // Cambiar a modo edición
+        }
+    };    
+
+    const handleNewClientSubmit = async (e) => {
+        e.preventDefault();
+    
+        if (isEditing) {
+            // Modo de edición
+            try {
+                const response = await fetch(`http://localhost:5000/clientes/${newClient.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newClient),
+                });
+    
+                if (!response.ok) {
+                    throw new Error('Error al actualizar el cliente');
+                }
+    
+                alert('Cliente actualizado con éxito!');
+                setIsEditing(false); // Regresar a modo no edición
+                setNewClient({ nombre: '', email: '', telefono: '', direccion: '' }); // Reiniciar el formulario
+            } catch (error) {
+                alert(error.message);
+            }
+        } else {
+            // Modo de creación
+            try {
+                const response = await fetch('http://localhost:5000/clientes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newClient),
+                });
+    
+                if (!response.ok) {
+                    throw new Error('Error al agregar el cliente');
+                }
+    
+                alert('Cliente agregado con éxito!');
+                setNewClient({ nombre: '', email: '', telefono: '', direccion: '' }); // Reiniciar el formulario
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+    
+        fetchClients(); // Recargar la lista de clientes
+    };    
 
     const handleNewOrderSubmit = async (e) => {
         e.preventDefault();
@@ -489,13 +546,6 @@ const UserPanel = () => {
                                 value={newClient.telefono}
                                 onChange={handleNewClientChange}
                             />
-                            <label>Dirección</label>
-                            <input
-                                type="text"
-                                name="direccion"
-                                value={newClient.direccion}
-                                onChange={handleNewClientChange}
-                            />
                             <button type="submit"><img src="/Imagenes/agregar-usuario.png" alt="Agregar cliente" /></button>
                         </form>
                     </div>
@@ -507,7 +557,7 @@ const UserPanel = () => {
                                 <tr>
                                     <th>ID Cliente</th>
                                     <th>Nombre</th>
-                                    <th>Email</th>
+                                    <th>E-mail</th>
                                     <th>Teléfono</th>
                                     <th></th>
                                 </tr>
@@ -520,9 +570,9 @@ const UserPanel = () => {
                                         <td>{client.email}</td>
                                         <td>{client.telefono}</td>
                                         <td>
-                                            <button><img src="/Imagenes/lapiz-de-usuario.png" alt="Editar usuario" /></button>
+                                            <button onClick={() => handleEditClient(client.idCliente)}><img src="/Imagenes/lapiz-de-usuario.png" alt="Editar usuario" /></button>
                                             <br />
-                                            <button><img src="/Imagenes/basura.png" alt="Eliminar usuario" /></button>
+                                            <button onClick={() => handleDeleteClient(client.idCliente)}><img src="/Imagenes/basura.png" alt="Eliminar usuario" /></button>
                                         </td>
                                     </tr>
                                 ))}

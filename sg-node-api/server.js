@@ -111,15 +111,25 @@ app.post('/register', async (req, res) => {
 app.post('/clientes', (req, res) => {
     const { nombre, telefono, email } = req.body;
 
+    // Validación de campos básicos
     if (!nombre || !telefono || !email) {
         return res.status(400).json({ message: 'Por favor, completa todos los campos del cliente.' });
     }
 
-    connection.query('INSERT INTO CLIENTE (NOMBRE, TELEFONO, EMAIL) VALUES (?, ?, ?)', [nombre, telefono, email], (err) => {
-        if (err) return handleError(res, err, 'Error al crear el cliente');
+    // Inserción en la base de datos
+    connection.query(
+        'INSERT INTO CLIENTE (NOMBRE, TELEFONO, EMAIL) VALUES (?, ?, ?)', 
+        [nombre, telefono, email], 
+        (err, results) => {
+            if (err) return handleError(res, err, 'Error al crear el cliente');
 
-        res.status(201).json({ message: 'Cliente creado con éxito' });
-    });
+            // Devolver respuesta exitosa con ID del cliente creado
+            res.status(201).json({ 
+                message: 'Cliente creado con éxito', 
+                clienteId: results.insertId 
+            });
+        }
+    );
 });
 
 // Ruta para actualizar un cliente existente
@@ -127,14 +137,20 @@ app.put('/clientes/:id', (req, res) => {
     const { id } = req.params;
     const { nombre, telefono, email } = req.body;
 
+    console.log(req.body); // Depurar: ver el cuerpo de la solicitud
+
     if (!nombre || !telefono || !email) {
         return res.status(400).json({ message: 'Por favor, completa todos los campos del cliente.' });
     }
 
-    connection.query('UPDATE CLIENTE SET NOMBRE = ?, TELEFONO = ?, EMAIL = ? WHERE idCliente = ?', 
+    connection.query(
+        'UPDATE CLIENTE SET NOMBRE = ?, TELEFONO = ?, EMAIL = ? WHERE idCliente = ?', 
         [nombre, telefono, email, id], 
         (err, results) => {
-            if (err) return handleError(res, err, 'Error al actualizar el cliente');
+            if (err) {
+                console.error('Error al actualizar el cliente:', err); // Agregar console.error para depuración
+                return res.status(500).json({ message: 'Error al actualizar el cliente' });
+            }
 
             if (results.affectedRows === 0) {
                 return res.status(404).json({ message: 'Cliente no encontrado' });
