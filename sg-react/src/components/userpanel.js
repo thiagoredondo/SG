@@ -122,6 +122,7 @@ const UserPanel = () => {
         }));
     };
 
+    // Función para eliminar cliente
     const handleDeleteClient = async (clientId) => {
         if (window.confirm("¿Estás seguro de que deseas eliminar este cliente?")) {
             try {
@@ -166,7 +167,7 @@ const UserPanel = () => {
             setIsEditing(true); // Cambiar a modo edición
         }
     };    
-
+    // Función para editar clientes
     const handleNewClientSubmit = async (e) => {
         e.preventDefault();
     
@@ -453,7 +454,6 @@ const UserPanel = () => {
                     </div>
                     <button type="submit">
                         {isEditing ? (
-
                             <img src="Imagenes/controlar.png" alt="Editar Pedido" />
                         ) : (
                             <img src="Imagenes/mas.png" alt="Agregar Pedido" />
@@ -521,7 +521,7 @@ const UserPanel = () => {
                 </div>
                 <div className="client-panel">
                     <div className="new-client">
-                        <h2>Nuevo Cliente</h2>
+                    <h2>{isEditing ? 'Editar Cliente' : 'Nuevo Cliente'}</h2>
                         <form onSubmit={handleNewClientSubmit}>
                             <label>Nombre</label>
                             <input
