@@ -40,6 +40,12 @@
   padding: 0.5rem 1rem;
   border-radius: 0.2rem;
 }
+.cta-a img {
+  justify-content: center;
+  align-items: center;
+  height: 15px;
+  width: auto;
+}
 
 @media (max-width: 480px) {
   .header-landing {

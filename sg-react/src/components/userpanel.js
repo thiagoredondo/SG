@@ -394,7 +394,15 @@ const UserPanel = () => {
                         />
                         <label htmlFor="facturado">Facturado</label>
                     </div>
-                    <button type="submit">{isEditing ? 'Actualizar Pedido' : 'Agregar Pedido'}</button>
+                    <button type="submit">
+                        {isEditing ? (
+
+                            <img src="Imagenes/controlar.png" alt="Editar Pedido" />
+                        ) : (
+                            <img src="Imagenes/mas.png" alt="Agregar Pedido" />
+                        )}
+                    </button>
+
                 </form>
             </div>
             <div className="right-panel">
@@ -445,8 +453,8 @@ const UserPanel = () => {
                                         <td>{order.categoria}</td>
                                         <td>{order.facturado ? 'Sí' : 'No'}</td>
                                         <td>
-                                            <button onClick={() => handleEditOrder(order)}>Editar</button>
-                                            <button onClick={() => handleDeleteOrder(order.idPedido)}>Eliminar</button>
+                                            <button onClick={() => handleEditOrder(order)}><img src="/Imagenes/lapiz.png" alt="Editar" /></button>
+                                            <button onClick={() => handleDeleteOrder(order.idPedido)}><img src="/Imagenes/basura.png" alt="Eliminar" /></button>
                                         </td>
                                     </tr>
                                 ))}
@@ -488,7 +496,7 @@ const UserPanel = () => {
                                 value={newClient.direccion}
                                 onChange={handleNewClientChange}
                             />
-                            <button type="submit">Agregar Cliente</button>
+                            <button type="submit"><img src="/Imagenes/agregar-usuario.png" alt="Agregar cliente" /></button>
                         </form>
                     </div>
 
@@ -512,9 +520,9 @@ const UserPanel = () => {
                                         <td>{client.email}</td>
                                         <td>{client.telefono}</td>
                                         <td>
-                                            <button>Editar</button>
+                                            <button><img src="/Imagenes/lapiz-de-usuario.png" alt="Editar usuario" /></button>
                                             <br />
-                                            <button>Eliminar</button>
+                                            <button><img src="/Imagenes/basura.png" alt="Eliminar usuario" /></button>
                                         </td>
                                     </tr>
                                 ))}

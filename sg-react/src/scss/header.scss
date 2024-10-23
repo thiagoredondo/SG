@@ -56,6 +56,13 @@ $header-bg-color: #313638;
     background-color: $main-color;
     padding: 0.5rem 1rem;
     border-radius: $border-radius;
+
+    img {
+        justify-content: center;
+        align-items: center;
+        height: 15px;
+        width: auto;
+    }
 }
 
 // Media Queries
